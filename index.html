@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Interactive 3D Object</title>
+    <title>Interactive 3D Object with HDR Skybox</title>
     <style>
         body { margin: 0; overflow: hidden; }
         canvas { display: block; }
@@ -15,6 +15,10 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <!-- OrbitControls for user interaction -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- RGBELoader for loading HDR environment maps -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/RGBELoader.js"></script>
+    <!-- PMREMGenerator for processing environment maps -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/pmrem/PMREMGenerator.js"></script>
     <!-- Your custom script -->
     <script src="script.js"></script>
 </body>

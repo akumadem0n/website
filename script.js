@@ -14,6 +14,8 @@ camera.position.set(0, 2, 5); // Adjusted camera position
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+// Enable gamma correction for accurate color representation
+renderer.outputEncoding = THREE.sRGBEncoding;
 document.body.appendChild(renderer.domElement);
 
 // Add Ambient Light
@@ -33,34 +35,74 @@ controls.enableZoom = true; // Allow zooming
 controls.target.set(0, 1, 0); // Adjust the target
 controls.update();
 
-// Load 3D Model
-let model;
-const loader = new THREE.GLTFLoader();
+// Load HDR Environment Map
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+pmremGenerator.compileEquirectangularShader();
 
-// Optional: Use DracoLoader for compressed models
-/*
-const dracoLoader = new THREE.DRACOLoader();
-dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.1/');
-loader.setDRACOLoader(dracoLoader);
-*/
+const rgbeLoader = new THREE.RGBELoader();
+rgbeLoader.setDataType(THREE.UnsignedByteType); // Set data type
 
-loader.load(
-    'assets/your-model.glb',
-    function (gltf) {
-        model = gltf.scene;
-        model.position.set(0, 0, 0); // Adjust model position if needed
-        scene.add(model);
+rgbeLoader.load(
+    'assets/your-hdr.hdr', // Path to your HDR image
+    function (hdrEquirect) {
+        const envMap = pmremGenerator.fromEquirectangular(hdrEquirect).texture;
+
+        // Set the scene's environment map
+        scene.environment = envMap;
+        // Optional: Set as background
+        // scene.background = envMap;
+
+        hdrEquirect.dispose();
+        pmremGenerator.dispose();
+
+        // Load 3D Model after environment map is ready
+        loadModel(envMap);
     },
     undefined,
     function (error) {
-        console.error('An error occurred while loading the model:', error);
+        console.error('An error occurred while loading the HDR:', error);
     }
 );
+
+// Function to load the 3D model
+function loadModel(envMap) {
+    // Load 3D Model
+    let model;
+    const loader = new THREE.GLTFLoader();
+
+    loader.load(
+        'assets/your-model.glb',
+        function (gltf) {
+            model = gltf.scene;
+
+            // Adjust materials to use the environment map
+            model.traverse((node) => {
+                if (node.isMesh) {
+                    if (node.material && node.material.isMeshStandardMaterial) {
+                        node.material.envMap = envMap;
+                        node.material.envMapIntensity = 1.0; // Adjust as needed
+                        node.material.needsUpdate = true;
+
+                        // Optional: Adjust material properties
+                        // node.material.metalness = 0.5;
+                        // node.material.roughness = 0.5;
+                    }
+                }
+            });
+
+            scene.add(model);
+        },
+        undefined,
+        function (error) {
+            console.error('An error occurred while loading the model:', error);
+        }
+    );
+}
 
 // Mouse Position Variables (for additional interactions)
 let mouseX = 0, mouseY = 0;
 
-// Event Listener for Mouse Movement (Optional: if you want to rotate model based on mouse)
+// Event Listener for Mouse Movement (Optional)
 document.addEventListener('mousemove', (event) => {
     mouseX = (event.clientX / window.innerWidth) - 0.5;
     mouseY = (event.clientY / window.innerHeight) - 0.5;
