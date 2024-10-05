@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3D Snake Game with Full Movement and Speed Boosts</title>
+    <title>3D Snake Game with Procedural Grid Background</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #111; }
         #score, #timer {
@@ -18,8 +19,8 @@
     <div id="timer">Time: 0s</div>
     <!-- Include Three.js library -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.146/build/three.min.js"></script>
-    <!-- Include CubeTextureLoader for environment mapping -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.146/examples/jsm/loaders/CubeTextureLoader.js"></script>
+    <!-- Include OrbitControls (optional) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.146/examples/js/controls/OrbitControls.js"></script> -->
     <script>
         let scene, camera, renderer;
         let snakeSegments = [];
@@ -41,19 +42,40 @@
         function init() {
             scene = new THREE.Scene();
 
-            // Environment map for reflections
-            const loader = new THREE.CubeTextureLoader();
-            const textureCube = loader.load([
-                'https://threejs.org/examples/textures/cube/Bridge2/posx.jpg',
-                'https://threejs.org/examples/textures/cube/Bridge2/negx.jpg',
-                'https://threejs.org/examples/textures/cube/Bridge2/posy.jpg',
-                'https://threejs.org/examples/textures/cube/Bridge2/negy.jpg',
-                'https://threejs.org/examples/textures/cube/Bridge2/posz.jpg',
-                'https://threejs.org/examples/textures/cube/Bridge2/negz.jpg'
-            ]);
-            scene.background = textureCube;
+            // Create a procedural grid background
+            const gridShaderMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    color1: { value: new THREE.Color(0x111111) },
+                    color2: { value: new THREE.Color(0x444444) },
+                    scale: { value: 20.0 },
+                },
+                vertexShader: `
+                    varying vec2 vUv;
+                    uniform float scale;
+                    void main() {
+                        vUv = uv * scale;
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    varying vec2 vUv;
+                    uniform vec3 color1;
+                    uniform vec3 color2;
+                    void main() {
+                        float line = step(0.95, fract(vUv.x)) + step(0.95, fract(vUv.y));
+                        vec3 color = mix(color1, color2, line);
+                        gl_FragColor = vec4(color, 1.0);
+                    }
+                `,
+                side: THREE.BackSide,
+            });
 
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            // Create a large sphere to act as the background
+            const bgGeometry = new THREE.SphereGeometry(100, 64, 64);
+            const bgMesh = new THREE.Mesh(bgGeometry, gridShaderMaterial);
+            scene.add(bgMesh);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 200);
             camera.position.set(0, 30, 40);
             camera.lookAt(0, 0, 0);
 
@@ -62,19 +84,18 @@
             document.body.appendChild(renderer.domElement);
 
             // Lighting
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
 
             const pointLight = new THREE.PointLight(0xffffff, 1);
             pointLight.position.set(0, 50, 50);
             scene.add(pointLight);
 
-            // Procedural material for the snake
+            // Material for the snake
             const snakeMaterial = new THREE.MeshStandardMaterial({
                 color: 0x00ff00,
                 metalness: 0.5,
                 roughness: 0.2,
-                envMap: textureCube
             });
 
             const snakeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
@@ -84,8 +105,8 @@
             snakeSegments.push(snakeHead);
 
             // Create initial food and speed boost
-            createFood(textureCube);
-            createSpeedBoost(textureCube);
+            createFood();
+            createSpeedBoost();
 
             // Score and timer text
             scoreText = document.getElementById('score');
@@ -99,14 +120,13 @@
             window.addEventListener('keydown', onKeyDown, false);
         }
 
-        function createFood(envMap) {
+        function createFood() {
             if (food) scene.remove(food);
 
             const foodMaterial = new THREE.MeshStandardMaterial({
                 color: 0xff0000,
                 metalness: 1,
                 roughness: 0,
-                envMap: envMap
             });
             const foodGeometry = new THREE.SphereGeometry(cubeSize / 2, 32, 32);
             food = new THREE.Mesh(foodGeometry, foodMaterial);
@@ -118,14 +138,13 @@
             scene.add(food);
         }
 
-        function createSpeedBoost(envMap) {
+        function createSpeedBoost() {
             if (speedBoost) scene.remove(speedBoost);
 
             const boostMaterial = new THREE.MeshStandardMaterial({
                 color: 0x0000ff,
                 metalness: 1,
                 roughness: 0,
-                envMap: envMap
             });
             const boostGeometry = new THREE.TetrahedronGeometry(cubeSize / 1.5);
             speedBoost = new THREE.Mesh(boostGeometry, boostMaterial);
@@ -207,7 +226,7 @@
             // Check for collision with food
             if (headPos.distanceTo(food.position) < 0.5) {
                 growSnake();
-                createFood(scene.background);
+                createFood();
                 score += 10 * comboMultiplier;
                 comboMultiplier += 0.1; // Increase combo multiplier
                 scoreText.innerHTML = 'Score: ' + Math.floor(score);
@@ -219,7 +238,7 @@
                 comboMultiplier += 0.5; // Increase combo multiplier significantly
                 score += 50 * comboMultiplier;
                 scoreText.innerHTML = 'Score: ' + Math.floor(score);
-                createSpeedBoost(scene.background);
+                createSpeedBoost();
             }
         }
 
@@ -228,7 +247,6 @@
                 color: 0x00ff00,
                 metalness: 0.5,
                 roughness: 0.2,
-                envMap: scene.background
             });
             const snakeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
             const newSegment = new THREE.Mesh(snakeGeometry, snakeMaterial);
@@ -251,8 +269,8 @@
             moveInterval = 200;
             scoreText.innerHTML = 'Score: ' + score;
             startTime = Date.now();
-            createFood(scene.background);
-            createSpeedBoost(scene.background);
+            createFood();
+            createSpeedBoost();
         }
     </script>
 </body>
