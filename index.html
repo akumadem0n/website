@@ -1,300 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Three.js 3D Platformer</title>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    canvas { display: block; }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodge the Cube - 3D Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
 </head>
 <body>
-<script>
-  let scene, camera, renderer, player, obstacles, collectibles, powerUps;
-  let keys = {};
-  let speed = 0.2;
-  let score = 0;
-  let powerUpActive = false;
-  let powerUpDuration = 5000;
-  let playerHealth = 3;
-  const playerStartPosition = { x: 0, y: 2, z: 0 };
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-  // Initialize the scene
-  function init() {
-    // Scene setup
-    scene = new THREE.Scene();
+        // Player Sphere
+        const playerGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const playerMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const player = new THREE.Mesh(playerGeometry, playerMaterial);
+        player.position.set(0, -5, 0);
+        scene.add(player);
 
-    // Create a procedural skybox
-    const loader = new THREE.CubeTextureLoader();
-    const texture = loader.load([
-      'https://threejs.org/examples/textures/cube/skybox/px.jpg',
-      'https://threejs.org/examples/textures/cube/skybox/nx.jpg',
-      'https://threejs.org/examples/textures/cube/skybox/py.jpg',
-      'https://threejs.org/examples/textures/cube/skybox/ny.jpg',
-      'https://threejs.org/examples/textures/cube/skybox/pz.jpg',
-      'https://threejs.org/examples/textures/cube/skybox/nz.jpg'
-    ]);
-    scene.background = texture;
+        // Ground
+        const groundGeometry = new THREE.PlaneGeometry(50, 50);
+        const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
+        const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+        ground.rotation.x = Math.PI / 2;
+        ground.position.y = -6;
+        scene.add(ground);
 
-    // Camera setup
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 30, 50);
-    camera.lookAt(0, 0, 0);
+        // Cubes Group
+        const cubes = [];
 
-    // Renderer setup
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
-    directionalLight.shadow.mapSize.width = 1024;
-    directionalLight.shadow.mapSize.height = 1024;
-    directionalLight.shadow.camera.near = 0.5;
-    directionalLight.shadow.camera.far = 100;
-    document.body.appendChild(renderer.domElement);
+        // Lights
+        const light = new THREE.AmbientLight(0xffffff); // Soft white light
+        scene.add(light);
 
-    // Light setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
-    scene.add(ambientLight);
+        // Camera Position
+        camera.position.z = 10;
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    directionalLight.position.set(20, 50, 20);
-    directionalLight.castShadow = true;
-    scene.add(directionalLight);
+        // Player Movement
+        let moveLeft = false;
+        let moveRight = false;
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') moveLeft = true;
+            if (event.key === 'ArrowRight') moveRight = true;
+        });
+        document.addEventListener('keyup', (event) => {
+            if (event.key === 'ArrowLeft') moveLeft = false;
+            if (event.key === 'ArrowRight') moveRight = false;
+        });
 
-    // Platform
-    const platformGeometry = new THREE.BoxGeometry(100, 1, 100);
-    const platformMaterial = new THREE.MeshStandardMaterial({
-      color: 0x808080,
-      metalness: 0.7,
-      roughness: 0.3,
-      onBeforeCompile: shader => {
-        // shader.uniforms.time = { value: 0 };
-        shader.vertexShader = 'uniform float time;\n' + shader.vertexShader;
-        shader.fragmentShader = 'uniform float time;\n' + shader.fragmentShader;
-        shader.fragmentShader = shader.fragmentShader.replace(
-          '#include <dithering_fragment>',
-          '#include <dithering_fragment>\nfloat pattern = sin(time + position.x * 0.1 + position.z * 0.1) * 0.5 + 0.5;\ngl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0, 0.9, 0.6), pattern);'
-        );
-        platformMaterial.userData.shader = shader;
-      }
-    });
-    const platform = new THREE.Mesh(platformGeometry, platformMaterial);
-    platform.receiveShadow = true;
-    scene.add(platform);
-
-    // Player
-    const playerGeometry = new THREE.BoxGeometry(2, 2, 2);
-    const playerMaterial = new THREE.MeshStandardMaterial({
-      color: 0xff0000,
-      metalness: 0.6,
-      roughness: 0.4,
-      envMapIntensity: 1.5
-    });
-    player = new THREE.Mesh(playerGeometry, playerMaterial);
-    player.position.set(playerStartPosition.x, playerStartPosition.y, playerStartPosition.z);
-    player.castShadow = true;
-    scene.add(player);
-    camera.lookAt(player.position);
-
-    // Obstacles
-    obstacles = [];
-    for (let i = 0; i < 10; i++) {
-      const obstacleGeometry = new THREE.BoxGeometry(3, 3, 3);
-      const obstacleMaterial = new THREE.MeshStandardMaterial({
-        color: 0x0000ff,
-        metalness: 0.5,
-        roughness: 0.7,
-        envMapIntensity: 1.2
-      });
-      const obstacle = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
-      obstacle.position.set(
-        Math.random() * 80 - 40,
-        1.5,
-        Math.random() * 80 - 40
-      );
-      obstacle.castShadow = true;
-      obstacles.push(obstacle);
-      scene.add(obstacle);
-    }
-
-    // Add movement to obstacles
-    obstacles.forEach((obstacle, index) => {
-      obstacle.userData = {
-        direction: Math.random() > 0.5 ? 1 : -1,
-        speed: 0.05 + Math.random() * 0.05
-      };
-    });
-
-    // Collectibles
-    collectibles = [];
-    for (let i = 0; i < 5; i++) {
-      const collectibleGeometry = new THREE.SphereGeometry(1, 16, 16);
-      const collectibleMaterial = new THREE.MeshStandardMaterial({
-        color: 0xffff00,
-        metalness: 0.8,
-        roughness: 0.2,
-        emissive: new THREE.Color(0xffff00),
-        emissiveIntensity: 0.5
-      });
-      const collectible = new THREE.Mesh(collectibleGeometry, collectibleMaterial);
-      collectible.position.set(
-        Math.random() * 80 - 40,
-        1,
-        Math.random() * 80 - 40
-      );
-      collectible.castShadow = true;
-      collectibles.push(collectible);
-      scene.add(collectible);
-    }
-
-    // Power-ups
-    powerUps = [];
-    for (let i = 0; i < 2; i++) {
-      const powerUpGeometry = new THREE.DodecahedronGeometry(1);
-      const powerUpMaterial = new THREE.MeshStandardMaterial({
-        color: 0x00ff00,
-        metalness: 0.9,
-        roughness: 0.1,
-        emissive: new THREE.Color(0x00ff00),
-        emissiveIntensity: 0.6
-      });
-      const powerUp = new THREE.Mesh(powerUpGeometry, powerUpMaterial);
-      powerUp.position.set(
-        Math.random() * 80 - 40,
-        1,
-        Math.random() * 80 - 40
-      );
-      powerUp.castShadow = true;
-      powerUps.push(powerUp);
-      scene.add(powerUp);
-    }
-
-    // Score and Health display
-    const scoreDiv = document.createElement('div');
-    scoreDiv.style.position = 'absolute';
-    scoreDiv.style.top = '10px';
-    scoreDiv.style.left = '10px';
-    scoreDiv.style.fontSize = '24px';
-    scoreDiv.style.color = 'black';
-    scoreDiv.innerHTML = `Score: ${score} | Health: ${playerHealth}`;
-    document.body.appendChild(scoreDiv);
-
-    // Add event listeners
-    document.addEventListener('keydown', (e) => {
-      const key = e.key.toLowerCase();
-      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(key)) {
-        keys[key] = true;
-      }
-    });
-
-    document.addEventListener('keyup', (e) => {
-      const key = e.key.toLowerCase();
-      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(key)) {
-        keys[key] = false;
-      }
-    });
-
-    // Start animation
-    renderer.setAnimationLoop(() => {
-      animate(scoreDiv);
-    });
-  }
-
-  // Animation loop
-  function animate(scoreDiv) {
-    handlePlayerMovement();
-    moveObstacles();
-    checkCollisions(scoreDiv);
-    updateMaterials();
-    renderer.render(scene, camera);
-  }
-
-  // Player movement handling
-  function handlePlayerMovement() {
-    if (keys['arrowup'] || keys['w']) player.position.z -= speed;
-    if (keys['arrowdown'] || keys['s']) player.position.z += speed;
-    if (keys['arrowleft'] || keys['a']) player.position.x -= speed;
-    if (keys['arrowright'] || keys['d']) player.position.x += speed;
-  }
-
-  // Move obstacles
-  function moveObstacles() {
-    obstacles.forEach(obstacle => {
-      obstacle.position.x += obstacle.userData.direction * obstacle.userData.speed;
-      if (obstacle.position.x > 40 || obstacle.position.x < -40) {
-        obstacle.userData.direction *= -1;
-      }
-    });
-  }
-
-  // Collision detection
-  function checkCollisions(scoreDiv) {
-    obstacles.forEach(obstacle => {
-      const distance = player.position.distanceTo(obstacle.position);
-      if (distance < 2.5) {
-        playerHealth--;
-        player.position.set(playerStartPosition.x, playerStartPosition.y, playerStartPosition.z);
-        scoreDiv.innerHTML = `Score: ${score} | Health: ${playerHealth}`;
-        if (playerHealth <= 0) {
-          alert('Game Over!');
-          resetGame();
+        // Spawn Cubes
+        function spawnCube() {
+            const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+            const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+            const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+            cube.position.set((Math.random() - 0.5) * 20, 10, 0);
+            scene.add(cube);
+            cubes.push(cube);
         }
-      }
-    });
 
-    collectibles = collectibles.filter(collectible => {
-      const distance = player.position.distanceTo(collectible.position);
-      if (distance < 2) {
-        scene.remove(collectible);
-        score++;
-        scoreDiv.innerHTML = `Score: ${score} | Health: ${playerHealth}`;
-        return false;
-      }
-      return true;
-    });
+        setInterval(spawnCube, 1000);
 
-    powerUps = powerUps.filter(powerUp => {
-      const distance = player.position.distanceTo(powerUp.position);
-      if (distance < 2) {
-        scene.remove(powerUp);
-        activatePowerUp();
-        return false;
-      }
-      return true;
-    });
-  }
+        // Game Loop
+        function animate() {
+            requestAnimationFrame(animate);
 
-  // Activate power-up
-  function activatePowerUp() {
-    if (powerUpActive) return;
-    powerUpActive = true;
-    speed *= 2;
-    setTimeout(() => {
-      speed /= 2;
-      powerUpActive = false;
-    }, powerUpDuration);
-  }
+            // Move Player
+            if (moveLeft) player.position.x -= 0.1;
+            if (moveRight) player.position.x += 0.1;
 
-  // Reset game
-  function resetGame() {
-    playerHealth = 3;
-    score = 0;
-    player.position.set(playerStartPosition.x, playerStartPosition.y, playerStartPosition.z);
-    init();
-  }
+            // Move Cubes
+            for (let i = 0; i < cubes.length; i++) {
+                cubes[i].position.y -= 0.05;
+                if (cubes[i].position.y < -6) {
+                    scene.remove(cubes[i]);
+                    cubes.splice(i, 1);
+                    i--;
+                }
 
-  // Responsive resizing
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-  });
+                // Collision Detection
+                const distance = player.position.distanceTo(cubes[i].position);
+                if (distance < 1.5) {
+                    alert('Game Over!');
+                    window.location.reload();
+                }
+            }
 
-  // Start the game
-  init();
-</script>
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Handle Window Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
 </body>
 </html>
