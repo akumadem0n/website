@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Three.js Enhanced Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Start Screen -->
+    <div id="startScreen">
+        <h1>Welcome to the Game</h1>
+        <button id="startButton">Start Game</button>
+    </div>
+
+    <!-- Game UI -->
+    <div id="gameUI" style="display: none;">
+        <div id="score">Score: 0</div>
+        <div id="timer">Time Left: 60</div>
+    </div>
+
+    <!-- The game will be rendered here -->
+    <!-- Include Three.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Include GLTFLoader -->
+    <script src="https://threejs.org/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Include OrbitControls (optional for debugging) -->
+    <!-- <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script> -->
+    <script src="main.js"></script>
+</body>
+</html>
