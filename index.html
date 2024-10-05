@@ -2,37 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3D Snake Game</title>
+    <title>3D Snake Game with Full Movement and Speed Boosts</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #111; }
-        #score { position: absolute; color: #fff; font-family: Arial, sans-serif; font-size: 24px; top: 10px; left: 10px; }
+        #score, #timer {
+            position: absolute; color: #fff; font-family: Arial, sans-serif; font-size: 24px;
+            top: 10px;
+        }
+        #score { left: 10px; }
+        #timer { right: 10px; }
     </style>
 </head>
 <body>
     <div id="score">Score: 0</div>
+    <div id="timer">Time: 0s</div>
     <!-- Include Three.js library -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.146/build/three.min.js"></script>
-    <!-- Include OrbitControls (optional, if you want to enable camera controls) -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.146/examples/js/controls/OrbitControls.js"></script> -->
+    <!-- Include CubeTextureLoader for environment mapping -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.146/examples/jsm/loaders/CubeTextureLoader.js"></script>
     <script>
-        let scene, camera, renderer, snake, food, scoreText;
+        let scene, camera, renderer;
         let snakeSegments = [];
         let direction = new THREE.Vector3(1, 0, 0);
         let moveInterval = 200;
         let lastMoveTime = 0;
         let score = 0;
+        let startTime;
         const gridSize = 20;
         const cubeSize = 1;
+        let food;
+        let speedBoost;
+        let scoreText, timerText;
+        let comboMultiplier = 1;
 
         init();
         animate();
 
         function init() {
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x111111);
+
+            // Environment map for reflections
+            const loader = new THREE.CubeTextureLoader();
+            const textureCube = loader.load([
+                'https://threejs.org/examples/textures/cube/Bridge2/posx.jpg',
+                'https://threejs.org/examples/textures/cube/Bridge2/negx.jpg',
+                'https://threejs.org/examples/textures/cube/Bridge2/posy.jpg',
+                'https://threejs.org/examples/textures/cube/Bridge2/negy.jpg',
+                'https://threejs.org/examples/textures/cube/Bridge2/posz.jpg',
+                'https://threejs.org/examples/textures/cube/Bridge2/negz.jpg'
+            ]);
+            scene.background = textureCube;
 
             camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 15, 20);
+            camera.position.set(0, 30, 40);
             camera.lookAt(0, 0, 0);
 
             renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -40,43 +62,79 @@
             document.body.appendChild(renderer.domElement);
 
             // Lighting
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(ambientLight);
 
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
-            directionalLight.position.set(0, 50, 50);
-            scene.add(directionalLight);
+            const pointLight = new THREE.PointLight(0xffffff, 1);
+            pointLight.position.set(0, 50, 50);
+            scene.add(pointLight);
 
-            // Create snake head
-            const snakeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+            // Procedural material for the snake
+            const snakeMaterial = new THREE.MeshStandardMaterial({
+                color: 0x00ff00,
+                metalness: 0.5,
+                roughness: 0.2,
+                envMap: textureCube
+            });
+
             const snakeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
             const snakeHead = new THREE.Mesh(snakeGeometry, snakeMaterial);
             snakeHead.position.set(0, 0, 0);
             scene.add(snakeHead);
             snakeSegments.push(snakeHead);
 
-            // Create initial food
-            createFood();
+            // Create initial food and speed boost
+            createFood(textureCube);
+            createSpeedBoost(textureCube);
 
-            // Score text
+            // Score and timer text
             scoreText = document.getElementById('score');
+            timerText = document.getElementById('timer');
+
+            // Start time
+            startTime = Date.now();
 
             // Event listeners
             window.addEventListener('resize', onWindowResize, false);
             window.addEventListener('keydown', onKeyDown, false);
         }
 
-        function createFood() {
+        function createFood(envMap) {
             if (food) scene.remove(food);
-            const foodMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-            const foodGeometry = new THREE.SphereGeometry(cubeSize / 2, 16, 16);
+
+            const foodMaterial = new THREE.MeshStandardMaterial({
+                color: 0xff0000,
+                metalness: 1,
+                roughness: 0,
+                envMap: envMap
+            });
+            const foodGeometry = new THREE.SphereGeometry(cubeSize / 2, 32, 32);
             food = new THREE.Mesh(foodGeometry, foodMaterial);
             food.position.set(
                 (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
-                0,
+                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
                 (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize
             );
             scene.add(food);
+        }
+
+        function createSpeedBoost(envMap) {
+            if (speedBoost) scene.remove(speedBoost);
+
+            const boostMaterial = new THREE.MeshStandardMaterial({
+                color: 0x0000ff,
+                metalness: 1,
+                roughness: 0,
+                envMap: envMap
+            });
+            const boostGeometry = new THREE.TetrahedronGeometry(cubeSize / 1.5);
+            speedBoost = new THREE.Mesh(boostGeometry, boostMaterial);
+            speedBoost.position.set(
+                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
+                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
+                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize
+            );
+            scene.add(speedBoost);
         }
 
         function onWindowResize() {
@@ -99,16 +157,27 @@
                 case 40: // Down arrow
                     if (direction.z === 0) direction = new THREE.Vector3(0, 0, 1);
                     break;
+                case 81: // 'Q' key - Move Up
+                    if (direction.y === 0) direction = new THREE.Vector3(0, 1, 0);
+                    break;
+                case 69: // 'E' key - Move Down
+                    if (direction.y === 0) direction = new THREE.Vector3(0, -1, 0);
+                    break;
             }
         }
 
         function animate() {
             requestAnimationFrame(animate);
+
             const currentTime = Date.now();
+            const elapsedTime = ((currentTime - startTime) / 1000).toFixed(1);
+            timerText.innerHTML = 'Time: ' + elapsedTime + 's';
+
             if (currentTime - lastMoveTime > moveInterval) {
                 moveSnake();
                 lastMoveTime = currentTime;
             }
+
             renderer.render(scene, camera);
         }
 
@@ -123,6 +192,7 @@
             // Check for collision with walls
             const headPos = snakeSegments[0].position;
             if (Math.abs(headPos.x) > (gridSize / 2) * cubeSize ||
+                Math.abs(headPos.y) > (gridSize / 2) * cubeSize ||
                 Math.abs(headPos.z) > (gridSize / 2) * cubeSize) {
                 gameOver();
             }
@@ -137,14 +207,29 @@
             // Check for collision with food
             if (headPos.distanceTo(food.position) < 0.5) {
                 growSnake();
-                createFood();
-                score += 10;
-                scoreText.innerHTML = 'Score: ' + score;
+                createFood(scene.background);
+                score += 10 * comboMultiplier;
+                comboMultiplier += 0.1; // Increase combo multiplier
+                scoreText.innerHTML = 'Score: ' + Math.floor(score);
+            }
+
+            // Check for collision with speed boost
+            if (headPos.distanceTo(speedBoost.position) < 0.5) {
+                moveInterval = Math.max(50, moveInterval - 20); // Increase speed
+                comboMultiplier += 0.5; // Increase combo multiplier significantly
+                score += 50 * comboMultiplier;
+                scoreText.innerHTML = 'Score: ' + Math.floor(score);
+                createSpeedBoost(scene.background);
             }
         }
 
         function growSnake() {
-            const snakeMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+            const snakeMaterial = new THREE.MeshStandardMaterial({
+                color: 0x00ff00,
+                metalness: 0.5,
+                roughness: 0.2,
+                envMap: scene.background
+            });
             const snakeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
             const newSegment = new THREE.Mesh(snakeGeometry, snakeMaterial);
             const tail = snakeSegments[snakeSegments.length - 1];
@@ -154,7 +239,7 @@
         }
 
         function gameOver() {
-            alert('Game Over! Your score: ' + score);
+            alert('Game Over!\nYour score: ' + Math.floor(score) + '\nTime survived: ' + ((Date.now() - startTime) / 1000).toFixed(1) + 's');
             // Reset game
             while (snakeSegments.length > 1) {
                 scene.remove(snakeSegments.pop());
@@ -162,8 +247,12 @@
             snakeSegments[0].position.set(0, 0, 0);
             direction.set(1, 0, 0);
             score = 0;
+            comboMultiplier = 1;
+            moveInterval = 200;
             scoreText.innerHTML = 'Score: ' + score;
-            createFood();
+            startTime = Date.now();
+            createFood(scene.background);
+            createSpeedBoost(scene.background);
         }
     </script>
 </body>
