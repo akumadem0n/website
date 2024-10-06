@@ -1,159 +1,163 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>3D Snake Game with Procedural Grid Background</title>
+    <title>Enhanced 3D Landscape with Procedural Clouds</title>
     <style>
-        body { margin: 0; overflow: hidden; background-color: #111; }
-        #score, #timer {
-            position: absolute; color: #fff; font-family: Arial, sans-serif; font-size: 24px;
-            top: 10px;
-        }
-        #score { left: 10px; }
-        #timer { right: 10px; }
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
     </style>
 </head>
 <body>
-    <div id="score">Score: 0</div>
-    <div id="timer">Time: 0s</div>
-    <!-- Include Three.js library -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.146/build/three.min.js"></script>
-    <!-- Include OrbitControls (optional) -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/three@0.146/examples/js/controls/OrbitControls.js"></script> -->
-    <script>
-        let scene, camera, renderer;
-        let snakeSegments = [];
-        let direction = new THREE.Vector3(1, 0, 0);
-        let moveInterval = 200;
-        let lastMoveTime = 0;
-        let score = 0;
-        let startTime;
-        const gridSize = 20;
-        const cubeSize = 1;
-        let food;
-        let speedBoost;
-        let scoreText, timerText;
-        let comboMultiplier = 1;
+    <!-- Include Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-        init();
-        animate();
+    <!-- Terrain Vertex Shader -->
+    <script id="vertexShader" type="x-shader/x-vertex">
+        uniform float time;
+        varying vec2 vUv;
+        varying float elevation;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        // Simplex 3D noise function (for terrain displacement)
+        // [Include your noise function here]
+
+        void main() {
+            vUv = uv;
+            vec2 noiseCoord = uv * 8.0;
+            elevation = snoise(vec2(noiseCoord + time * 0.1)) * 5.0;
+            vec3 newPosition = position + normal * elevation;
+            vNormal = normalMatrix * normal;
+            vPosition = (modelViewMatrix * vec4(newPosition, 1.0)).xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+        }
+    </script>
+
+    <!-- Terrain Fragment Shader -->
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        uniform float time;
+        uniform vec3 lightPosition;
+        varying vec2 vUv;
+        varying float elevation;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+
+        // Simplex 3D noise function (for terrain texturing)
+        // [Include your noise function here]
+
+        void main() {
+            // Calculate lighting
+            vec3 lightDir = normalize(lightPosition - vPosition);
+            float diff = max(dot(vNormal, lightDir), 0.0);
+
+            // Terrain colors
+            vec3 water = vec3(0.0, 0.3, 0.7);
+            vec3 grass = vec3(0.1, 0.6, 0.1);
+            vec3 rock = vec3(0.5, 0.5, 0.5);
+            vec3 snow = vec3(1.0, 1.0, 1.0);
+
+            // Refined texture using additional noise
+            float detailNoise = snoise(vUv * 50.0 + time * 0.1) * 0.5;
+            float height = elevation + detailNoise;
+
+            vec3 color = mix(water, grass, smoothstep(-1.0, 0.0, height));
+            color = mix(color, rock, smoothstep(0.0, 2.0, height));
+            color = mix(color, snow, smoothstep(2.0, 5.0, height));
+
+            // Apply lighting
+            vec3 ambient = vec3(0.2) * color;
+            vec3 diffuse = diff * color;
+            vec3 finalColor = ambient + diffuse;
+
+            gl_FragColor = vec4(finalColor, 1.0);
+        }
+    </script>
+
+    <!-- Sky Vertex Shader -->
+    <script id="skyVertexShader" type="x-shader/x-vertex">
+        varying vec3 vWorldPosition;
+        void main() {
+            vec4 worldPosition = modelMatrix * vec4(position, 1.0);
+            vWorldPosition = worldPosition.xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    </script>
+
+    <!-- Sky Fragment Shader -->
+    <script id="skyFragmentShader" type="x-shader/x-fragment">
+        uniform float time;
+        varying vec3 vWorldPosition;
+
+        // Simplex 3D noise function (for clouds)
+        // [Include your noise function here]
+
+        void main() {
+            vec3 direction = normalize(vWorldPosition);
+            float theta = acos(direction.y);
+            float phi = atan(direction.z, direction.x);
+            vec2 uv = vec2(phi, theta) * 0.5 / 3.1415926;
+            float cloudNoise = snoise(vec3(uv * 10.0, time * 0.05));
+
+            vec3 skyColor = mix(vec3(0.6, 0.8, 1.0), vec3(1.0), smoothstep(0.3, 0.6, cloudNoise));
+
+            gl_FragColor = vec4(skyColor, 1.0);
+        }
+    </script>
+
+    <script>
+        let scene, camera, renderer, terrain, sky, uniforms;
 
         function init() {
+            // Scene setup
             scene = new THREE.Scene();
 
-            // Create a procedural grid background
-            const gridShaderMaterial = new THREE.ShaderMaterial({
-                uniforms: {
-                    color1: { value: new THREE.Color(0x111111) },
-                    color2: { value: new THREE.Color(0x444444) },
-                    scale: { value: 20.0 },
-                },
-                vertexShader: `
-                    varying vec2 vUv;
-                    uniform float scale;
-                    void main() {
-                        vUv = uv * scale;
-                        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                    }
-                `,
-                fragmentShader: `
-                    varying vec2 vUv;
-                    uniform vec3 color1;
-                    uniform vec3 color2;
-                    void main() {
-                        float line = step(0.95, fract(vUv.x)) + step(0.95, fract(vUv.y));
-                        vec3 color = mix(color1, color2, line);
-                        gl_FragColor = vec4(color, 1.0);
-                    }
-                `,
-                side: THREE.BackSide,
-            });
+            // Camera setup
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 20, 50);
 
-            // Create a large sphere to act as the background
-            const bgGeometry = new THREE.SphereGeometry(100, 64, 64);
-            const bgMesh = new THREE.Mesh(bgGeometry, gridShaderMaterial);
-            scene.add(bgMesh);
-
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 200);
-            camera.position.set(0, 30, 40);
-            camera.lookAt(0, 0, 0);
-
+            // Renderer setup
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
             // Lighting
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-            scene.add(ambientLight);
+            const light = new THREE.DirectionalLight(0xffffff, 1.0);
+            light.position.set(0, 50, 50);
+            scene.add(light);
 
-            const pointLight = new THREE.PointLight(0xffffff, 1);
-            pointLight.position.set(0, 50, 50);
-            scene.add(pointLight);
-
-            // Material for the snake
-            const snakeMaterial = new THREE.MeshStandardMaterial({
-                color: 0x00ff00,
-                metalness: 0.5,
-                roughness: 0.2,
+            // Terrain setup
+            const geometry = new THREE.PlaneGeometry(100, 100, 200, 200);
+            uniforms = {
+                time: { value: 1.0 },
+                lightPosition: { value: light.position }
+            };
+            const material = new THREE.ShaderMaterial({
+                uniforms: uniforms,
+                vertexShader: document.getElementById('vertexShader').textContent,
+                fragmentShader: document.getElementById('fragmentShader').textContent,
+                lights: true
             });
+            terrain = new THREE.Mesh(geometry, material);
+            terrain.rotation.x = -Math.PI / 2;
+            scene.add(terrain);
 
-            const snakeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-            const snakeHead = new THREE.Mesh(snakeGeometry, snakeMaterial);
-            snakeHead.position.set(0, 0, 0);
-            scene.add(snakeHead);
-            snakeSegments.push(snakeHead);
+            // Sky setup
+            const skyGeometry = new THREE.SphereGeometry(400, 32, 32);
+            const skyUniforms = {
+                time: { value: 1.0 }
+            };
+            const skyMaterial = new THREE.ShaderMaterial({
+                uniforms: skyUniforms,
+                vertexShader: document.getElementById('skyVertexShader').textContent,
+                fragmentShader: document.getElementById('skyFragmentShader').textContent,
+                side: THREE.BackSide
+            });
+            sky = new THREE.Mesh(skyGeometry, skyMaterial);
+            scene.add(sky);
 
-            // Create initial food and speed boost
-            createFood();
-            createSpeedBoost();
-
-            // Score and timer text
-            scoreText = document.getElementById('score');
-            timerText = document.getElementById('timer');
-
-            // Start time
-            startTime = Date.now();
-
-            // Event listeners
+            // Resize handling
             window.addEventListener('resize', onWindowResize, false);
-            window.addEventListener('keydown', onKeyDown, false);
-        }
-
-        function createFood() {
-            if (food) scene.remove(food);
-
-            const foodMaterial = new THREE.MeshStandardMaterial({
-                color: 0xff0000,
-                metalness: 1,
-                roughness: 0,
-            });
-            const foodGeometry = new THREE.SphereGeometry(cubeSize / 2, 32, 32);
-            food = new THREE.Mesh(foodGeometry, foodMaterial);
-            food.position.set(
-                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
-                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
-                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize
-            );
-            scene.add(food);
-        }
-
-        function createSpeedBoost() {
-            if (speedBoost) scene.remove(speedBoost);
-
-            const boostMaterial = new THREE.MeshStandardMaterial({
-                color: 0x0000ff,
-                metalness: 1,
-                roughness: 0,
-            });
-            const boostGeometry = new THREE.TetrahedronGeometry(cubeSize / 1.5);
-            speedBoost = new THREE.Mesh(boostGeometry, boostMaterial);
-            speedBoost.position.set(
-                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
-                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize,
-                (Math.floor(Math.random() * gridSize) - gridSize / 2) * cubeSize
-            );
-            scene.add(speedBoost);
         }
 
         function onWindowResize() {
@@ -162,116 +166,23 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
-        function onKeyDown(event) {
-            switch(event.keyCode) {
-                case 37: // Left arrow
-                    if (direction.x === 0) direction = new THREE.Vector3(-1, 0, 0);
-                    break;
-                case 38: // Up arrow
-                    if (direction.z === 0) direction = new THREE.Vector3(0, 0, -1);
-                    break;
-                case 39: // Right arrow
-                    if (direction.x === 0) direction = new THREE.Vector3(1, 0, 0);
-                    break;
-                case 40: // Down arrow
-                    if (direction.z === 0) direction = new THREE.Vector3(0, 0, 1);
-                    break;
-                case 81: // 'Q' key - Move Up
-                    if (direction.y === 0) direction = new THREE.Vector3(0, 1, 0);
-                    break;
-                case 69: // 'E' key - Move Down
-                    if (direction.y === 0) direction = new THREE.Vector3(0, -1, 0);
-                    break;
-            }
-        }
-
-        function animate() {
+        function animate(timestamp) {
             requestAnimationFrame(animate);
+            uniforms.time.value = timestamp * 0.001;
+            sky.material.uniforms.time.value = timestamp * 0.001;
 
-            const currentTime = Date.now();
-            const elapsedTime = ((currentTime - startTime) / 1000).toFixed(1);
-            timerText.innerHTML = 'Time: ' + elapsedTime + 's';
-
-            if (currentTime - lastMoveTime > moveInterval) {
-                moveSnake();
-                lastMoveTime = currentTime;
-            }
+            // Camera animation
+            const radius = 50;
+            const speed = 0.0005;
+            camera.position.x = Math.sin(timestamp * speed) * radius;
+            camera.position.z = Math.cos(timestamp * speed) * radius;
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
 
             renderer.render(scene, camera);
         }
 
-        function moveSnake() {
-            // Move body
-            for (let i = snakeSegments.length - 1; i > 0; i--) {
-                snakeSegments[i].position.copy(snakeSegments[i - 1].position);
-            }
-            // Move head
-            snakeSegments[0].position.add(direction.clone().multiplyScalar(cubeSize));
-
-            // Check for collision with walls
-            const headPos = snakeSegments[0].position;
-            if (Math.abs(headPos.x) > (gridSize / 2) * cubeSize ||
-                Math.abs(headPos.y) > (gridSize / 2) * cubeSize ||
-                Math.abs(headPos.z) > (gridSize / 2) * cubeSize) {
-                gameOver();
-            }
-
-            // Check for collision with self
-            for (let i = 1; i < snakeSegments.length; i++) {
-                if (headPos.distanceTo(snakeSegments[i].position) < 0.1) {
-                    gameOver();
-                }
-            }
-
-            // Check for collision with food
-            if (headPos.distanceTo(food.position) < 0.5) {
-                growSnake();
-                createFood();
-                score += 10 * comboMultiplier;
-                comboMultiplier += 0.1; // Increase combo multiplier
-                scoreText.innerHTML = 'Score: ' + Math.floor(score);
-            }
-
-            // Check for collision with speed boost
-            if (headPos.distanceTo(speedBoost.position) < 0.5) {
-                moveInterval = Math.max(50, moveInterval - 20); // Increase speed
-                comboMultiplier += 0.5; // Increase combo multiplier significantly
-                score += 50 * comboMultiplier;
-                scoreText.innerHTML = 'Score: ' + Math.floor(score);
-                createSpeedBoost();
-            }
-        }
-
-        function growSnake() {
-            const snakeMaterial = new THREE.MeshStandardMaterial({
-                color: 0x00ff00,
-                metalness: 0.5,
-                roughness: 0.2,
-            });
-            const snakeGeometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-            const newSegment = new THREE.Mesh(snakeGeometry, snakeMaterial);
-            const tail = snakeSegments[snakeSegments.length - 1];
-            newSegment.position.copy(tail.position);
-            scene.add(newSegment);
-            snakeSegments.push(newSegment);
-        }
-
-        function gameOver() {
-            alert('Game Over!\nYour score: ' + Math.floor(score) + '\nTime survived: ' + ((Date.now() - startTime) / 1000).toFixed(1) + 's');
-            // Reset game
-            while (snakeSegments.length > 1) {
-                scene.remove(snakeSegments.pop());
-            }
-            snakeSegments[0].position.set(0, 0, 0);
-            direction.set(1, 0, 0);
-            score = 0;
-            comboMultiplier = 1;
-            moveInterval = 200;
-            scoreText.innerHTML = 'Score: ' + score;
-            startTime = Date.now();
-            createFood();
-            createSpeedBoost();
-        }
+        init();
+        animate();
     </script>
 </body>
 </html>
