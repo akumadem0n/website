@@ -96,14 +96,14 @@ a {
   transform-style: preserve-3d;
 }
 .boockup {
-  -webkit-transform: rotateX(0deg) rotateY(0deg) rotateZ(NaNdeg);
-  transform: rotateX(0deg) rotateY(0deg) rotateZ(NaNdeg);
+  -webkit-transform: rotateX(92deg) rotateY(-111deg) rotateZ(NaNdeg);
+  transform: rotateX(92deg) rotateY(-111deg) rotateZ(NaNdeg);
 }
 .book-container {
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  -webkit-animation: 7s rotatingAnimationY linear infinite;
-  animation: 7s rotatingAnimationY linear infinite;
+  -webkit-animation: 14s rotatingAnimationY linear infinite;
+  animation: 14s rotatingAnimationY linear infinite;
 }
 .book-container > div {
   position: absolute;
@@ -121,46 +121,46 @@ a {
 }
 .book-front {
   background-image: url('../images/book-cover.jpg');
-  width: 386.64px;
-  height: 499.41px;
-  -webkit-transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(0,0,0) rotateY(0deg);
-  transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(0,0,0) rotateY(0deg);
+  width: 295.92px;
+  height: 382.23px;
+  -webkit-transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(0,0,0) rotateY(0deg);
+  transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(0,0,0) rotateY(0deg);
 }
 .book-side-left {
   background-image: url('../images/book-spine.jpg');
-  width: 26.85px;
-  height: 499.41px;
-  -webkit-transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(-13.425px, 0, -13.425px) rotateY(-90deg);
-  transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(-13.425px, 0, -13.425px) rotateY(-90deg);
+  width: 20.55px;
+  height: 382.23px;
+  -webkit-transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(-10.275px, 0, -10.275px) rotateY(-90deg);
+  transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(-10.275px, 0, -10.275px) rotateY(-90deg);
 }
 .book-side-right {
   background-image: url('../images/book-side.jpg');
-  width: 26.85px;
-  height: 499.41px;
-  -webkit-transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(373.215px, 0px,-13.425px) rotateY(90deg);
-  transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(373.215px, 0px,-13.425px) rotateY(90deg);
+  width: 20.55px;
+  height: 382.23px;
+  -webkit-transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(285.64500000000004px, 0px,-10.275px) rotateY(90deg);
+  transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(285.64500000000004px, 0px,-10.275px) rotateY(90deg);
 }
 .book-top {
   background-image: url('../images/book-top.jpg');
   background-position: bottom right;
-  width: 386.64px;
-  height: 26.85px;
-  -webkit-transform: translate3d(-193.32px, -249.705px ,13.425px) translate3d(0px, -13.425px, -13.425px) rotateX(90deg);
-  transform: translate3d(-193.32px, -249.705px ,13.425px) translate3d(0px, -13.425px, -13.425px) rotateX(90deg);
+  width: 295.92px;
+  height: 20.55px;
+  -webkit-transform: translate3d(-147.96px, -191.115px ,10.275px) translate3d(0px, -10.275px, -10.275px) rotateX(90deg);
+  transform: translate3d(-147.96px, -191.115px ,10.275px) translate3d(0px, -10.275px, -10.275px) rotateX(90deg);
 }
 .book-bottom {
   background-image: url('../images/book-top.jpg');
-  width: 386.64px;
-  height: 26.85px;
-  -webkit-transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(0px, 485.985px, -13.425px) rotateX(-90deg);
-  transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(0px, 485.985px, -13.425px) rotateX(-90deg);
+  width: 295.92px;
+  height: 20.55px;
+  -webkit-transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(0px, 371.95500000000004px, -10.275px) rotateX(-90deg);
+  transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(0px, 371.95500000000004px, -10.275px) rotateX(-90deg);
 }
 .book-back {
   background-image: url('../images/book-back.jpg');
-  width: 386.64px;
-  height: 499.41px;
-  -webkit-transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(0,0, -26.85px) rotateY(180deg);
-  transform: translate3d(-193.32px ,-249.705px ,13.425px) translate3d(0,0, -26.85px) rotateY(180deg);
+  width: 295.92px;
+  height: 382.23px;
+  -webkit-transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(0,0, -20.55px) rotateY(180deg);
+  transform: translate3d(-147.96px ,-191.115px ,10.275px) translate3d(0,0, -20.55px) rotateY(180deg);
 }
 #credit {
   position: fixed;
