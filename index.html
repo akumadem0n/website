@@ -1,375 +1,358 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            touch-action: none;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #1a1a2e, #16213e);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: Arial, sans-serif;
-            height: 100vh;
-            width: 100vw;
-            position: fixed;
-        }
-
-        #gameContainer {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #gameCanvas {
-            border: 2px solid #fff;
-            border-radius: 8px;
-            margin-top: 10px;
-            touch-action: none;
-        }
-
-        #score {
-            color: white;
-            font-size: clamp(18px, 5vw, 24px);
-            margin-top: 10px;
-            z-index: 10;
-        }
-
-        .game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: clamp(24px, 8vw, 48px);
-            text-align: center;
-            display: none;
-            z-index: 20;
-            width: 90%;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        button {
-            background: #4CAF50;
-            border: none;
-            color: white;
-            padding: clamp(10px, 3vw, 15px) clamp(20px, 6vw, 32px);
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: clamp(14px, 4vw, 16px);
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #45a049;
-        }
-
-        #tutorial {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: clamp(18px, 5vw, 24px);
-            text-align: center;
-            background: rgba(0, 0, 0, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 30;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .fade-out {
-            animation: fadeOut 1s forwards;
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-    </style>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+    #terminal {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      font-size: 14px;
+      overflow-y: auto;
+    }
+    .log {
+      margin: 1px 0;
+      font-family: monospace;
+      white-space: pre;
+    }
+    .error { color: #ff4444; }
+    .warning { color: #ffaa00; }
+    .success { color: #44ff44; }
+    .info { color: #4444ff; }
+    .cmd { color: #44ffff; }
+    .data { color: #ff44ff; }
+    .matrix { color: #00ff00; }
+    .system { color: #ffff44; }
+    .matrix-rain {
+      position: fixed;
+      top: 0;
+      color: #0f0;
+      font-size: 14px;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .password-crack {
+      font-family: monospace;
+      color: #00ff00;
+      margin: 2px 0;
+    }
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,255,0,0.1);
+      pointer-events: none;
+      z-index: 2;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div id="gameContainer">
-        <div id="score">Score: 0</div>
-        <canvas id="gameCanvas"></canvas>
-        <div class="game-over" id="gameOver">
-            Game Over!<br>
-            <button onclick="resetGame()">Play Again</button>
-        </div>
-        <div id="tutorial">
-            Protect the skull!<br>
-            Tap the IDK enemies before they reach it!<br>
-            <button onclick="startGame()">Start Game</button>
-        </div>
-    </div>
+  <div id="overlay"></div>
+  <div id="terminal"></div>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scoreElement = document.getElementById('score');
-        const gameOverElement = document.getElementById('gameOver');
-        const tutorialElement = document.getElementById('tutorial');
-        const gameContainer = document.getElementById('gameContainer');
+  <script>
+    class AdvancedTerminal {
+      constructor() {
+        this.hashTypes = ['MD5', 'SHA-256', 'NTLM', 'Bcrypt'];
+        this.processList = [
+          'systemd', 'sshd', 'nginx', 'mysql', 'apache2', 'postgres',
+          'docker', 'cron', 'rsyslog', 'networkd'
+        ];
+        this.ipRanges = [
+          "192.168.1.0/24",
+          "10.0.0.0/16",
+          "172.16.0.0/12",
+          "203.0.113.0/24"
+        ];
+        this.ports = [21, 22, 23, 25, 53, 80, 443, 445, 3389, 8080];
+        this.vulnerabilities = [
+          "CVE-2023-45123", "CVE-2024-11234", "MS17-010", 
+          "BlueKeep", "Log4Shell", "Heartbleed"
+        ];
+      }
 
-        let score = 0;
-        let enemies = [];
-        let gameIsOver = false;
-        let gameStarted = false;
-        let skull = null;
+      log(text, className = '') {
+        const line = document.createElement('div');
+        line.className = `log ${className}`;
+        line.textContent = text;
+        terminal.appendChild(line);
+        terminal.scrollTop = terminal.scrollHeight;
+        return line;
+      }
+
+      createMatrixRain() {
+        const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*";
+        const stream = document.createElement('div');
+        stream.className = 'matrix-rain';
+        stream.style.left = `${Math.random() * 100}%`;
+        document.body.appendChild(stream);
+
+        let pos = -20;
+        const interval = setInterval(() => {
+          stream.style.top = `${pos}px`;
+          stream.textContent = Array.from({length: 20}, () => 
+            matrixChars[Math.floor(Math.random() * matrixChars.length)]).join('\n');
+          pos += 20;
+          if (pos > window.innerHeight) {
+            clearInterval(interval);
+            stream.remove();
+          }
+        }, 50);
+      }
+
+      async customProgress(text, duration) {
+        const container = document.createElement('div');
+        container.className = 'progress-container';
+        const progress = document.createElement('span');
+        progress.className = 'custom-progress';
+        container.appendChild(progress);
+        terminal.appendChild(container);
+
+        const states = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+        let i = 0;
+
+        return new Promise(resolve => {
+          const interval = setInterval(() => {
+            progress.textContent = `${states[i]} ${text}`;
+            i = (i + 1) % states.length;
+          }, 100);
+
+          setTimeout(() => {
+            clearInterval(interval);
+            container.remove();
+            resolve();
+          }, duration);
+        });
+      }
+
+      getRandomIP() {
+        return Array.from({length: 4}, () => 
+          Math.floor(Math.random() * 256)).join('.');
+      }
+
+      getRandomPort() {
+        return this.ports[Math.floor(Math.random() * this.ports.length)];
+      }
+
+      getRandomMAC() {
+        return Array.from({length: 6}, () => 
+          Math.floor(Math.random() * 256).toString(16).padStart(2, '0')).join(':');
+      }
+
+      async executeCommand(cmd, output) {
+        this.log(`┌──(root💀kali)-[/opt/tools]`, 'cmd');
+        this.log(`└─# ${cmd}`, 'cmd');
+        await new Promise(r => setTimeout(r, 500));
+        if (output) {
+          this.log(output);
+        }
+      }
+
+      async matrixBruteforce(type, length) {
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+        const attempts = Math.floor(Math.random() * 20) + 10;
         
-        function resizeCanvas() {
-            const containerWidth = gameContainer.clientWidth;
-            const containerHeight = gameContainer.clientHeight;
-            
-            const aspectRatio = 3/4;
-            let canvasWidth = containerWidth * 0.95;
-            let canvasHeight = containerHeight * 0.8;
-            
-            if (canvasHeight / canvasWidth > aspectRatio) {
-                canvasHeight = canvasWidth * aspectRatio;
-            } else {
-                canvasWidth = canvasHeight / aspectRatio;
-            }
-            
-            canvas.width = canvasWidth;
-            canvas.height = canvasHeight;
+        for (let i = 0; i < attempts; i++) {
+          const attempt = Array.from({length}, () => 
+            chars[Math.floor(Math.random() * chars.length)]).join('');
+          this.log(`[*] Attempting ${type}: ${attempt}`, 'matrix');
+          await new Promise(r => setTimeout(r, 100));
+          
+          if (Math.random() > 0.8) {
+            this.log(`[+] Pattern match found: ${attempt}`, 'success');
+          } else {
+            this.log(`[-] Failed attempt: ${attempt}`, 'error');
+          }
+        }
+      }
 
-            // Recreate skull after resize
-            skull = new Skull(canvas.width / 2, canvas.height / 2);
+      async runNmap(target) {
+        await this.executeCommand(`nmap -sS -sV -p- ${target}`, 
+`Starting Nmap 7.94 ( https://nmap.org ) at ${new Date().toLocaleString()}
+Nmap scan report for ${target}
+Host is up (0.045s latency).
+Not shown: 65525 closed tcp ports (reset)
+
+PORT     STATE SERVICE       VERSION
+22/tcp   open  ssh           OpenSSH 8.9p1
+80/tcp   open  http          nginx 1.18.0
+443/tcp  open  https         Apache httpd 2.4.41
+3306/tcp open  mysql         MySQL 8.0.32
+8080/tcp open  http-proxy    nginx
+
+MAC Address: ${this.getRandomMAC()} (Unknown)
+Network Distance: 2 hops`);
+      }
+
+      async runExploit(target, vuln) {
+        await this.executeCommand(
+          `msfconsole -q -x "use exploit/${vuln}; set RHOSTS ${target}; exploit"`,
+`[*] Started reverse TCP handler on 10.0.0.1:4444 
+[*] ${target}:445 - Using auxiliary/scanner/smb/smb_ms17_010 as check
+[+] ${target}:445     - Host is likely VULNERABLE to MS17-010! - Windows Server 2008 R2 Standard 7601 Service Pack 1 x64 (64-bit)
+[*] ${target}:445     - Scanned 1 of 1 hosts (100% complete)
+[*] ${target}:445 - Connecting to target for exploitation.
+[+] ${target}:445 - Connection established for exploitation.
+[+] ${target}:445 - Target OS selected valid for OS indicated by SMB reply
+[*] ${target}:445 - CORE raw buffer dump (42 bytes)
+[*] ${target}:445 - 0x00000000  57 69 6e 64 6f 77 73 20 53 65 72 76 65 72 20 32  Windows Server 2
+[*] ${target}:445 - 0x00000010  30 30 38 20 52 32 20 53 74 61 6e 64 61 72 64 20  008 R2 Standard 
+[*] Sending stage (200262 bytes)
+[*] Meterpreter session 1 opened
+[*] Server stopped.`);
+      }
+
+      async simulateSystemClone() {
+        this.log('\n[*] INITIATING SYSTEM REPLICATION SEQUENCE', 'warning');
+        await this.executeCommand('ps aux | grep critical', 
+          this.processList.map(proc => 
+            `root      ${Math.floor(Math.random() * 10000)}  ${Math.random().toFixed(1)} ${Math.random().toFixed(1)}   ${Math.floor(Math.random() * 1000000)}  ?    ${proc}`
+          ).join('\n')
+        );
+
+        this.log('\n[*] Identifying critical system processes...', 'info');
+        await this.customProgress('Analyzing memory structures', 2000);
+
+        this.log('\n[*] Creating memory snapshot...', 'info');
+        await this.executeCommand('dd if=/dev/mem of=/tmp/memdump bs=1M count=1024',
+          '1024+0 records in\n1024+0 records out\n1073741824 bytes (1.1 GB) copied, 2.32371 s, 462 MB/s');
+
+        this.log('\n[*] INITIATING SYSTEM REPLICATION', 'warning');
+        
+        const replicationSteps = [
+          'Analyzing memory structures',
+          'Mapping process dependencies',
+          'Creating virtual memory space',
+          'Replicating system state',
+          'Establishing parallel runtime',
+          'Synchronizing process threads',
+          'Verifying system integrity'
+        ];
+
+        for (const step of replicationSteps) {
+          this.log(`\n[*] ${step}...`, 'info');
+          await this.matrixBruteforce('Memory Pattern', 16);
+          await this.customProgress(step, 1500);
         }
 
-        class Skull {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.size = Math.min(canvas.width, canvas.height) * 0.15;
-                this.pulsePhase = 0;
-            }
+        this.log('\n[+] System replication complete', 'success');
+        await this.executeCommand('pstree', 
+`systemd─┬─ModemManager───2*[{ModemManager}]
+        ├─NetworkManager───2*[{NetworkManager}]
+        ├─accounts-daemon───2*[{accounts-daemon}]
+        ├─acpid
+        ├─avahi-daemon───avahi-daemon
+        ├─colord───2*[{colord}]
+        ├─cron
+        ├─cups-browsed───2*[{cups-browsed}]
+        ├─cupsd
+        ├─dbus-daemon
+        ├─gdm3─┬─gdm-session-wor─┬─gdm-x-session─┬─Xorg
+        │      │                 │               ├─gnome-session-b─┬─ssh-agent
+        ├─networkd-dispat
+        ├─polkitd───2*[{polkitd}]
+        ├─rsyslogd───3*[{rsyslogd}]
+        ├─rtkit-daemon───2*[{rtkit-daemon}]
+        ├─systemd─┬─(sd-pam)
+        │         ├─pulseaudio───2*[{pulseaudio}]
+        └─wpa_supplicant`);
+      }
 
-            draw() {
-                this.pulsePhase += 0.05;
-                const pulse = 1 + Math.sin(this.pulsePhase) * 0.05;
-                const size = this.size * pulse;
-
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.scale(pulse, pulse);
-
-                // Draw skull
-                ctx.fillStyle = '#ffffff';
-                ctx.beginPath();
-                // Skull shape
-                ctx.arc(0, 0, size/2, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Eyes
-                ctx.fillStyle = '#000000';
-                ctx.beginPath();
-                ctx.arc(-size/6, -size/8, size/8, 0, Math.PI * 2);
-                ctx.arc(size/6, -size/8, size/8, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Nose
-                ctx.beginPath();
-                ctx.moveTo(-size/8, 0);
-                ctx.lineTo(size/8, 0);
-                ctx.lineTo(0, size/6);
-                ctx.closePath();
-                ctx.fill();
-
-                // Teeth
-                ctx.beginPath();
-                ctx.moveTo(-size/3, size/4);
-                ctx.lineTo(size/3, size/4);
-                ctx.lineTo(size/4, size/2);
-                ctx.lineTo(-size/4, size/2);
-                ctx.closePath();
-                ctx.fill();
-
-                ctx.restore();
-            }
-
-            checkCollision(enemy) {
-                const distance = Math.sqrt(
-                    Math.pow(enemy.x - this.x, 2) + 
-                    Math.pow(enemy.y - this.y, 2)
-                );
-                return distance < this.size/2 + enemy.size/2;
-            }
+      async matrixPasswordCrack() {
+        const hashType = this.hashTypes[Math.floor(Math.random() * this.hashTypes.length)];
+        const overlay = document.getElementById('overlay');
+        
+        this.log(`\n[*] INITIATING ${hashType} HASH CRACKING SEQUENCE`, 'warning');
+        overlay.style.display = 'block';
+        
+        const wordlists = [
+          '/usr/share/wordlists/rockyou.txt',
+          '/usr/share/wordlists/fasttrack.txt',
+          '/usr/share/wordlists/dirb/common.txt'
+        ];
+        
+        await this.executeCommand(`hashcat -m 0 -a 3 ${hashType} ${wordlists[0]}`,
+          '[*] Initializing hash cracking engine...');
+        
+        let attempts = 0;
+        const maxAttempts = Math.floor(Math.random() * 20) + 30;
+        
+        while (attempts < maxAttempts) {
+          const hash = Array.from({length: 32}, () => 
+            '0123456789abcdef'[Math.floor(Math.random() * 16)]).join('');
+          
+          this.log(`[*] Testing hash: ${hash}`, 'matrix');
+          await new Promise(r => setTimeout(r, 50));
+          
+          if (Math.random() > 0.9) {
+            this.log(`[+] Potential match found: ${hash}`, 'success');
+            await this.matrixBruteforce('Pattern', 8);
+          }
+          
+          attempts++;
         }
+        
+        this.log('\n[+] Hash cracking sequence complete', 'success');
+        overlay.style.display = 'none';
+      }
 
-        class Enemy {
-            constructor() {
-                this.size = Math.min(canvas.width, canvas.height) * 0.08;
-                this.reset();
-            }
-
-            reset() {
-                const angle = Math.random() * Math.PI * 2;
-                const radius = Math.max(canvas.width, canvas.height);
-                this.x = canvas.width/2 + Math.cos(angle) * radius;
-                this.y = canvas.height/2 + Math.sin(angle) * radius;
-                this.targetX = canvas.width/2;
-                this.targetY = canvas.height/2;
-                this.speed = (Math.random() * 1 + 0.5) * (canvas.height / 400);
-                this.color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-                this.rotation = Math.random() * Math.PI * 2;
-                this.rotationSpeed = (Math.random() - 0.5) * 0.1;
-            }
-
-            update() {
-                const dx = this.targetX - this.x;
-                const dy = this.targetY - this.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance > 0) {
-                    this.x += (dx / distance) * this.speed;
-                    this.y += (dy / distance) * this.speed;
-                }
-
-                this.rotation += this.rotationSpeed;
-
-                if (skull && skull.checkCollision(this)) {
-                    if (!gameIsOver && gameStarted) {
-                        gameOver();
-                    }
-                }
-            }
-
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation);
-                
-                // Draw "IDK" text
-                ctx.font = `bold ${this.size}px Arial`;
-                ctx.fillStyle = this.color;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('IDK', 0, 0);
-
-                // Draw glowing effect
-                ctx.globalAlpha = 0.3;
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = 10;
-                ctx.fillText('IDK', 0, 0);
-                
-                ctx.restore();
-            }
-
-            checkTouch(x, y) {
-                const distance = Math.sqrt(
-                    Math.pow(x - this.x, 2) + Math.pow(y - this.y, 2)
-                );
-                return distance <= this.size;
-            }
+      async enhancedAttack() {
+        while (true) {
+          const target = this.getRandomIP();
+          
+          this.log('\n[*] INITIATING ADVANCED BREACH SEQUENCE', 'warning');
+          this.log(`[*] Primary target: ${target}`, 'info');
+          
+          await this.runNmap(target);
+          await this.matrixPasswordCrack();
+          
+          if (Math.random() > 0.7) {
+            await this.simulateSystemClone();
+          }
+          
+          const vulns = this.vulnerabilities.slice(0, 3);
+          for (const vuln of vulns) {
+            this.log(`\n[*] Attempting exploit: ${vuln}`, 'warning');
+            await this.matrixBruteforce('Exploit', 12);
+            await this.runExploit(target, vuln);
+          }
+          
+          this.log('\n[+] ACCESS GRANTED - SYSTEM COMPROMISED', 'success');
+          await this.executeCommand('id', 'uid=0(root) gid=0(root) groups=0(root)');
+          
+          await new Promise(r => setTimeout(r, 2000));
         }
+      }
 
-        function init() {
-            score = 0;
-            enemies = [];
-            gameIsOver = false;
-            gameOverElement.style.display = 'none';
-            scoreElement.textContent = `Score: ${score}`;
-            resizeCanvas();
-            skull = new Skull(canvas.width/2, canvas.height/2);
-        }
+      async start() {
+        this.log("Initializing terminal interface...", "system");
+        await this.customProgress("Loading system resources", 2000);
+        this.log("[*] System resources loaded", "info");
+        await this.enhancedAttack(); // Start the attack simulation loop
+      }
+    }
 
-        function startGame() {
-            tutorialElement.classList.add('fade-out');
-            setTimeout(() => {
-                tutorialElement.style.display = 'none';
-                gameStarted = true;
-                init();
-                animate();
-            }, 1000);
-        }
+    document.addEventListener("DOMContentLoaded", () => {
+      const terminalElement = document.getElementById("terminal");
 
-        function gameOver() {
-            gameIsOver = true;
-            gameStarted = false;
-            gameOverElement.style.display = 'block';
-        }
-
-        function resetGame() {
-            init();
-            gameStarted = true;
-            animate();
-        }
-
-        function handleTouch(event) {
-            event.preventDefault();
-            if (gameIsOver || !gameStarted) return;
-
-            const rect = canvas.getBoundingClientRect();
-            const touches = event.touches || [event];
-
-            for (let touch of touches) {
-                const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
-                const y = (touch.clientY - rect.top) * (canvas.height / rect.height);
-
-                enemies.forEach((enemy, index) => {
-                    if (enemy.checkTouch(x, y)) {
-                        enemies.splice(index, 1);
-                        score += 10;
-                        scoreElement.textContent = `Score: ${score}`;
-                    }
-                });
-            }
-        }
-
-        function animate() {
-            if (gameIsOver || !gameStarted) return;
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Draw skull
-            skull.draw();
-
-            // Spawn new enemies
-            if (Math.random() < 0.02) {
-                enemies.push(new Enemy());
-            }
-
-            // Update and draw enemies
-            enemies.forEach(enemy => {
-                enemy.update();
-                enemy.draw();
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        // Event listeners
-        window.addEventListener('resize', resizeCanvas);
-        canvas.addEventListener('touchstart', handleTouch, { passive: false });
-        canvas.addEventListener('touchmove', handleTouch, { passive: false });
-        canvas.addEventListener('click', handleTouch, { passive: false });
-
-        // Initial setup
-        init();
-    </script>
+      if (terminalElement) {
+        const terminal = new AdvancedTerminal();
+        terminal.start();
+      }
+    });
+  </script>
 </body>
 </html>
