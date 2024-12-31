@@ -3,301 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Best Seller Promotion - Affiliate</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <title>Survival Gear Store</title>
     <style>
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
         }
-        .product-card {
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 1rem;
+        }
+
+        .navbar h1 {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: pointer;
             transition: transform 0.2s;
         }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .category-card.active {
+            background: #FFD814;
+        }
+
+        .category-card span {
+            font-size: 2rem;
+        }
+
+        .category-card p {
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
         .product-card:hover {
             transform: translateY(-5px);
         }
-        .header-banner {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .amazon-button {
+            display: block;
+            background: #FFD814;
+            color: #111;
+            padding: 0.8rem;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .amazon-button:hover {
+            background: #F7CA00;
+        }
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <div id="root"></div>
+<body>
+    <nav class="navbar">
+        <h1>Survival Gear Store</h1>
+    </nav>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+    <div class="container">
+        <input type="text" class="search-bar" placeholder="Search products..." id="searchInput">
 
-        // Product Categories
-        const categories = {
-            "Home Security": products.filter(p => p.category === "Home Security").length,
-            "Food Storage": products.filter(p => p.category === "Food Storage").length,
-            "Home Fortification": products.filter(p => p.category === "Home Fortification").length,
-            "Defense Equipment": products.filter(p => p.category === "Defense Equipment").length,
-            "Food Preservation": products.filter(p => p.category === "Food Preservation").length,
-            "Water Management": products.filter(p => p.category === "Water Management").length,
-            "Power Solutions": products.filter(p => p.category === "Power Solutions").length,
-            "Medical Supplies": products.filter(p => p.category === "Medical Supplies").length,
-            "Communication": products.filter(p => p.category === "Communication").length
-        };
+        <div class="categories" id="categories">
+            <div class="category-card active" data-category="all">
+                <span>🔍</span>
+                <p>All Items</p>
+            </div>
+            <div class="category-card" data-category="home">
+                <span>🏠</span>
+                <p>Home Security</p>
+            </div>
+            <div class="category-card" data-category="food">
+                <span>🥫</span>
+                <p>Food Storage</p>
+            </div>
+            <div class="category-card" data-category="water">
+                <span>💧</span>
+                <p>Water Collection</p>
+            </div>
+            <div class="category-card" data-category="power">
+                <span>⚡</span>
+                <p>Power & Energy</p>
+            </div>
+        </div>
 
-        // Product Data
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <script>
         const products = [
-            {
-                id: 1,
-                title: "Motion-sensor lights",
-                price: 99.90,
-                category: "Home Security",
-                image: "/api/placeholder/400/300",
-                affiliateLink: "https://amzn.to/3Nd6iKw",
-                rating: 4.5
-            },
-            {
-                id: 2,
-                title: "Deadbolt locks",
-                price: 26.83,
-                category: "Home Security",
-                image: "/api/placeholder/380/300",
-                affiliateLink: "https://amzn.to/3ZN59Rv",
-                rating: 4.8
-            },
-            {
-                id: 3,
-                title: "Reinforced strike plates",
-                price: 24.87,
-                category: "Home Security",
-                image: "/api/placeholder/420/300",
-                affiliateLink: "https://amzn.to/3TSwnCz",
-                rating: 4.6
-            },
-            {
-                id: 4,
-                title: "Door and window alarms",
-                price: 23.42,
-                category: "Home Security",
-                image: "/api/placeholder/390/300",
-                affiliateLink: "https://amzn.to/4ewwFHK",
-                rating: 4.3
-            },
-            {
-                id: 13,
-                title: "Vacuum sealer",
-                price: 59.49,
-                category: "Food Storage",
-                image: "/api/placeholder/410/300",
-                affiliateLink: "https://amzn.to/4gQJxK3",
-                rating: 4.7
-            },
-            {
-                id: 14,
-                title: "Food-grade water storage containers",
-                price: 72.15,
-                category: "Food Storage",
-                image: "/api/placeholder/400/320",
-                affiliateLink: "https://amzn.to/3BsrHwU",
-                rating: 4.4
-            },
-            {
-                id: 25,
-                title: "Steel or solid core security door",
-                price: 113.15,
-                category: "Home Fortification",
-                image: "/api/placeholder/430/300",
-                affiliateLink: "https://amzn.to/3TM9QXR",
-                rating: 4.9
-            },
-            {
-                id: 32,
-                title: "Home defense weapons safe",
-                price: 82.12,
-                category: "Defense Equipment",
-                image: "/api/placeholder/400/310",
-                affiliateLink: "https://amzn.to/3TSGrLU",
-                rating: 4.8
-            },
-            {
-                id: 44,
-                title: "Dehydrator",
-                price: 40.46,
-                category: "Food Preservation",
-                image: "/api/placeholder/370/300",
-                affiliateLink: "https://amzn.to/3N6eqg7",
-                rating: 4.5
-            },
-            {
-                id: 54,
-                title: "Rainwater collection barrels",
-                price: 114.29,
-                category: "Water Management",
-                image: "/api/placeholder/410/310",
-                affiliateLink: "https://amzn.to/47OaytI",
-                rating: 4.6
-            },
-            {
-                id: 66,
-                title: "Portable solar panels",
-                price: 103.22,
-                category: "Power Solutions",
-                image: "/api/placeholder/420/310",
-                affiliateLink: "https://amzn.to/4gLeZcJ",
-                rating: 4.7
-            },
-            {
-                id: 77,
-                title: "Comprehensive first aid kit",
-                price: 119.52,
-                category: "Medical Supplies",
-                image: "/api/placeholder/400/290",
-                affiliateLink: "https://amzn.to/3Y4zQQZ",
-                rating: 4.8
-            },
-            {
-                id: 89,
-                title: "Hand-crank emergency radios",
-                price: 76.36,
-                category: "Communication",
-                image: "/api/placeholder/390/310",
-                affiliateLink: "https://amzn.to/3TTu95N",
-                rating: 4.4
-            },
-            {
-                id: 90,
-                title: "Long-range walkie-talkies",
-                price: 110.81,
-                category: "Communication",
-                image: "/api/placeholder/380/310",
-                affiliateLink: "https://amzn.to/4eO8HqP",
-                rating: 4.6
-            },
-            {
-                id: 91,
-                title: "HAM radios",
-                price: 40.81,
-                category: "Communication",
-                image: "/api/placeholder/410/290",
-                affiliateLink: "https://amzn.to/3Y5lD6d",
-                rating: 4.5
-            }
+            { id: 1, name: "Motion Sensor Lights", image: "https://picsum.photos/400/300?1", link: "https://amzn.to/3Nd6iKw", category: "home" },
+            { id: 2, name: "Deadbolt Locks", image: "https://picsum.photos/400/300?2", link: "https://amzn.to/3ZN59Rv", category: "home" },
+            { id: 3, name: "Reinforced Strike Plates", image: "https://picsum.photos/400/300?3", link: "https://amzn.to/3TSwnCz", category: "home" },
+            { id: 4, name: "Solar Power Bank", image: "https://picsum.photos/400/300?4", link: "https://amzn.to/4ewwFHK", category: "power" },
+            { id: 5, name: "Water Filter System", image: "https://picsum.photos/400/300?5", link: "https://amzn.to/3TSwnCz", category: "water" },
+            { id: 6, name: "Food Storage Containers", image: "https://picsum.photos/400/300?6", link: "https://amzn.to/4ewwFHK", category: "food" }
         ];
 
-        // Header Component
-        const Header = ({ searchTerm, setSearchTerm }) => (
-            <header className="header-banner text-white py-8 px-4 mb-8">
-                <div className="container mx-auto">
-                    <h1 className="text-4xl font-bold text-center mb-6">Best Seller Promotion - Affiliate</h1>
-                    <div className="max-w-xl mx-auto">
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            className="w-full px-4 py-2 rounded-lg text-gray-900"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+        function createProductCard(product) {
+            return `
+                <div class="product-card" data-category="${product.category}">
+                    <img src="${product.image}" alt="${product.name}" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <a href="${product.link}" class="amazon-button" target="_blank">View on Amazon</a>
                     </div>
                 </div>
-            </header>
-        );
+            `;
+        }
 
-        // Category Filter Component
-        const CategoryFilter = ({ categories, selected, onSelect }) => (
-            <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-                <h2 className="text-xl font-semibold mb-4">Categories</h2>
-                <div className="space-y-2">
-                    <button
-                        onClick={() => onSelect(null)}
-                        className={`w-full text-left px-3 py-2 rounded ${!selected ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'}`}
-                    >
-                        All Products
-                    </button>
-                    {Object.keys(categories).map(category => (
-                        <button
-                            key={category}
-                            onClick={() => onSelect(category)}
-                            className={`w-full text-left px-3 py-2 rounded ${selected === category ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'}`}
-                        >
-                            {category}
-                        </button>
-                    ))}
-                </div>
-            </div>
-        );
+        function displayProducts(filteredProducts) {
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+        }
 
-        // Product Card Component
-        const ProductCard = ({ product }) => (
-            <div className="product-card bg-white rounded-lg shadow-md overflow-hidden">
-                <img src={product.image} alt={product.title} className="w-full h-48 object-cover"/>
-                <div className="p-4">
-                    <span className="text-sm text-blue-600 font-semibold">{product.category}</span>
-                    <h3 className="text-lg font-semibold mt-1 mb-2">{product.title}</h3>
-                    <div className="flex items-center justify-between mb-4">
-                        <span className="text-2xl font-bold text-green-600">${product.price.toFixed(2)}</span>
-                        <div className="text-yellow-400">
-                            {'★'.repeat(Math.floor(product.rating))}
-                            <span className="text-gray-400">{'★'.repeat(5-Math.floor(product.rating))}</span>
-                        </div>
-                    </div>
-                    <a
-                        href={product.affiliateLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block w-full text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                        View on Amazon
-                    </a>
-                </div>
-            </div>
-        );
+        function filterProducts(category, searchTerm = '') {
+            let filtered = products;
+            
+            if (category !== 'all') {
+                filtered = filtered.filter(product => product.category === category);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(product => 
+                    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+            
+            displayProducts(filtered);
+        }
 
-        // Main App Component
-        const App = () => {
-            const [searchTerm, setSearchTerm] = useState('');
-            const [selectedCategory, setSelectedCategory] = useState(null);
-            const [filteredProducts, setFilteredProducts] = useState(products);
+        document.getElementById('categories').addEventListener('click', (e) => {
+            const categoryCard = e.target.closest('.category-card');
+            if (!categoryCard) return;
 
-            useEffect(() => {
-                const filtered = products.filter(product => {
-                    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase());
-                    const matchesCategory = !selectedCategory || product.category === selectedCategory;
-                    return matchesSearch && matchesCategory;
-                });
-                setFilteredProducts(filtered);
-            }, [searchTerm, selectedCategory]);
+            document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+            categoryCard.classList.add('active');
 
-            return (
-                <div>
-                    <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                    <main className="container mx-auto px-4 pb-8">
-                        <div className="flex flex-col md:flex-row gap-8">
-                            <aside className="md:w-64 flex-shrink-0">
-                                <CategoryFilter
-                                    categories={categories}
-                                    selected={selectedCategory}
-                                    onSelect={setSelectedCategory}
-                                />
-                            </aside>
-                            <div className="flex-grow">
-                                <div className="product-grid">
-                                    {filteredProducts.map(product => (
-                                        <ProductCard key={product.id} product={product} />
-                                    ))}
-                                </div>
-                                {filteredProducts.length === 0 && (
-                                    <div className="text-center text-gray-500 mt-8">
-                                        No products found matching your criteria
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </main>
-                </div>
-            );
-        };
+            const category = categoryCard.dataset.category;
+            const searchTerm = document.getElementById('searchInput').value;
+            filterProducts(category, searchTerm);
+        });
 
-        // Render the app
-        ReactDOM.render(<App />, document.getElementById('root'));
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            const activeCategory = document.querySelector('.category-card.active').dataset.category;
+            filterProducts(activeCategory, searchTerm);
+        });
+
+        displayProducts(products);
     </script>
 </body>
 </html>
