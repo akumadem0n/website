@@ -17,16 +17,25 @@
         }
 
         .navbar {
-            background-color: #1a1a1a;
-            color: white;
-            padding: 1rem;
-        }
+    background-color: #1a1a1a;
+    color: white;
+    padding: 1rem;
+    position: relative;
+}
 
-        .navbar h1 {
-            max-width: 1200px;
-            margin: 0 auto;
-            font-size: 1.5rem;
-        }
+.navbar h1 {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-size: 1.5rem;
+}
+
+.subtitle {
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    margin-top: 2px;
+}
 
         .container {
             max-width: 1200px;
@@ -136,7 +145,8 @@
 </head>
 <body>
     <nav class="navbar">
-        <h1>Best Seller Promotion Presents: Survival Gear Store</h1>
+        <h1>Survival Gear Store</h1>
+        <span class="subtitle">by Best Seller Promotion</span>
     </nav>
 
     <div class="container">
@@ -182,99 +192,100 @@
 
     <script>
 const products = [
+
     // Home Security
-    { id: 1, name: "Motion-sensor lights", image: "ProductImages/1.jpg", link: "https://amzn.to/3Nd6iKw", category: "home" },
-    { id: 2, name: "Deadbolt locks", image: "ProductImages/2.jpg", link: "https://amzn.to/3ZN59Rv", category: "home" },
-    { id: 3, name: "Reinforced strike plates", image: "ProductImages/3.jpg", link: "https://amzn.to/3TSwnCz", category: "home" },
-    { id: 4, name: "Door and window alarms", image: "ProductImages/4.jpg", link: "https://amzn.to/4ewwFHK", category: "home" },
-    { id: 25, name: "Steel security door", image: "ProductImages/25.jpg", link: "https://amzn.to/3TM9QXR", category: "home" },
-    { id: 26, name: "Window security film", image: "ProductImages/26.jpg", link: "https://amzn.to/3Y8XlIN", category: "home" },
-    { id: 27, name: "Door brace", image: "ProductImages/27.jpg", link: "https://amzn.to/486nFGV", category: "home" },
-    { id: 28, name: "Plywood for reinforcement", image: "ProductImages/28.jpg", link: "https://amzn.to/3zD4Z4F", category: "home" },
-    { id: 29, name: "Security bars for windows", image: "ProductImages/29.jpg", link: "https://amzn.to/3Y6pG2b", category: "home" },
-    { id: 30, name: "Caulking gun", image: "ProductImages/30.jpg", link: "https://amzn.to/3Y3EqPs", category: "home" },
-    { id: 31, name: "Battery-powered LED lighting", image: "ProductImages/31.jpg", link: "https://amzn.to/4duaJLN", category: "home" },
+    { id: 1, name: "Motion-Sensor LED Security Lights", image: "ProductImages/1.jpg", link: "https://amzn.to/3Nd6iKw", category: "home" },
+    { id: 2, name: "SmartKey Deadbolt Security Lock", image: "ProductImages/2.jpg", link: "https://amzn.to/3ZN59Rv", category: "home" },
+    { id: 3, name: "Heavy-Duty Strike Plate Reinforcement", image: "ProductImages/3.jpg", link: "https://amzn.to/3TSwnCz", category: "home" },
+    { id: 4, name: "Wireless Door & Window Security Alarm", image: "ProductImages/4.jpg", link: "https://amzn.to/4ewwFHK", category: "home" },
+    { id: 25, name: "Steel Core Security Entry Door", image: "ProductImages/25.jpg", link: "https://amzn.to/3TM9QXR", category: "home" },
+    { id: 26, name: "Security Window Film Protection", image: "ProductImages/26.jpg", link: "https://amzn.to/3Y8XlIN", category: "home" },
+    { id: 27, name: "Heavy-Duty Door Security Bar", image: "ProductImages/27.jpg", link: "https://amzn.to/486nFGV", category: "home" },
+    { id: 28, name: "High-Grade Security Plywood Sheets", image: "ProductImages/28.jpg", link: "https://amzn.to/3zD4Z4F", category: "home" },
+    { id: 29, name: "Adjustable Window Security Bars", image: "ProductImages/29.jpg", link: "https://amzn.to/3Y6pG2b", category: "home" },
+    { id: 30, name: "Professional Caulking Gun Kit", image: "ProductImages/30.jpg", link: "https://amzn.to/3Y3EqPs", category: "home" },
+    { id: 31, name: "Rechargeable LED Emergency Lights", image: "ProductImages/31.jpg", link: "https://amzn.to/4duaJLN", category: "home" },
 
     // Food Storage
-    { id: 13, name: "Vacuum sealer", image: "ProductImages/13.jpg", link: "https://amzn.to/4gQJxK3", category: "food" },
-    { id: 14, name: "Food-grade water storage containers", image: "ProductImages/14.jpg", link: "https://amzn.to/3BsrHwU", category: "food" },
-    { id: 15, name: "Airtight food storage bins", image: "ProductImages/15.jpg", link: "https://amzn.to/3XReo0o", category: "food" },
-    { id: 16, name: "Heavy-duty shelving", image: "ProductImages/16.jpg", link: "https://amzn.to/3XGU8yo", category: "food" },
-    { id: 17, name: "Canning jars", image: "ProductImages/17.jpg", link: "https://amzn.to/3TTLLyx", category: "food" },
-    { id: 18, name: "Labels and markers", image: "ProductImages/18.jpg", link: "https://amzn.to/4esqggt", category: "food" },
-    { id: 19, name: "Vacuum seal bags", image: "ProductImages/19.jpg", link: "https://amzn.to/3zL96vt", category: "food" },
-    { id: 20, name: "Scissors for cutting vacuum bags", image: "ProductImages/20.jpg", link: "https://amzn.to/47WYJBy", category: "food" },
-    { id: 21, name: "Stackable plastic crates", image: "ProductImages/21.jpg", link: "https://amzn.to/3Bt6CCr", category: "food" },
-    { id: 22, name: "Oxygen absorbers", image: "ProductImages/22.jpg", link: "https://amzn.to/47U6Iz5", category: "food" },
-    { id: 23, name: "Measuring cups", image: "ProductImages/23.jpg", link: "https://amzn.to/47SACE8", category: "food" },
-    { id: 24, name: "Plastic funnels", image: "ProductImages/24.jpg", link: "https://amzn.to/3TQdMaa", category: "food" },
+    { id: 13, name: "Professional Food Vacuum Sealer", image: "ProductImages/13.jpg", link: "https://amzn.to/4gQJxK3", category: "food" },
+    { id: 14, name: "Premium Water Storage Container Set", image: "ProductImages/14.jpg", link: "https://amzn.to/3BsrHwU", category: "food" },
+    { id: 15, name: "Airtight Food Storage Container Set", image: "ProductImages/15.jpg", link: "https://amzn.to/3XReo0o", category: "food" },
+    { id: 16, name: "Industrial Grade Storage Shelving", image: "ProductImages/16.jpg", link: "https://amzn.to/3XGU8yo", category: "food" },
+    { id: 17, name: "Mason Jar Canning Set", image: "ProductImages/17.jpg", link: "https://amzn.to/3TTLLyx", category: "food" },
+    { id: 18, name: "Food Storage Label System Kit", image: "ProductImages/18.jpg", link: "https://amzn.to/4esqggt", category: "food" },
+    { id: 19, name: "Premium Vacuum Sealing Bags", image: "ProductImages/19.jpg", link: "https://amzn.to/3zL96vt", category: "food" },
+    { id: 20, name: "Heavy-Duty Storage Bag Scissors", image: "ProductImages/20.jpg", link: "https://amzn.to/47WYJBy", category: "food" },
+    { id: 21, name: "Stackable Storage Crate System", image: "ProductImages/21.jpg", link: "https://amzn.to/3Bt6CCr", category: "food" },
+    { id: 22, name: "Long-Term Food Storage Oxygen Absorbers", image: "ProductImages/22.jpg", link: "https://amzn.to/47U6Iz5", category: "food" },
+    { id: 23, name: "Professional Measuring Cup Set", image: "ProductImages/23.jpg", link: "https://amzn.to/47SACE8", category: "food" },
+    { id: 24, name: "Multi-Size Storage Funnel Set", image: "ProductImages/24.jpg", link: "https://amzn.to/3TQdMaa", category: "food" },
 
     // Water Collection
-    { id: 54, name: "Rainwater collection barrels", image: "ProductImages/54.jpg", link: "https://amzn.to/47OaytI", category: "water" },
-    { id: 55, name: "Gutter diverter kits", image: "ProductImages/55.jpg", link: "https://amzn.to/3Y84MzC", category: "water" },
-    { id: 56, name: "Water filtration pitchers", image: "ProductImages/56.jpg", link: "https://amzn.to/3Bpq8Qr", category: "water" },
-    { id: 57, name: "Water test kits", image: "ProductImages/57.jpg", link: "https://amzn.to/47WZhaA", category: "water" },
-    { id: 58, name: "Collapsible water containers", image: "ProductImages/58.jpg", link: "https://amzn.to/3Y6YUa8", category: "water" },
-    { id: 59, name: "PVC pipes and connectors", image: "ProductImages/59.jpg", link: "https://amzn.to/3XPHXzv", category: "water" },
-    { id: 60, name: "Mesh screens", image: "ProductImages/60.jpg", link: "https://amzn.to/4eqUpg2", category: "water" },
-    { id: 61, name: "Hacksaw", image: "ProductImages/61.jpg", link: "https://amzn.to/3ZOOKfC", category: "water" },
-    { id: 62, name: "Silicone sealant", image: "ProductImages/62.jpg", link: "https://amzn.to/3ZOeA3o", category: "water" },
-    { id: 63, name: "Hose and nozzle", image: "ProductImages/63.jpg", link: "https://amzn.to/3ZLAHHo", category: "water" },
-    { id: 64, name: "Concrete blocks", image: "ProductImages/64.jpg", link: "https://amzn.to/3BtVTI3", category: "water" },
-    { id: 65, name: "Spigots and washers", image: "ProductImages/65.jpg", link: "https://amzn.to/3zx8A4h", category: "water" },
+    { id: 54, name: "Professional Rain Collection Barrel", image: "ProductImages/54.jpg", link: "https://amzn.to/47OaytI", category: "water" },
+    { id: 55, name: "Advanced Gutter Collection System", image: "ProductImages/55.jpg", link: "https://amzn.to/3Y84MzC", category: "water" },
+    { id: 56, name: "High-Capacity Water Filtration Pitcher", image: "ProductImages/56.jpg", link: "https://amzn.to/3Bpq8Qr", category: "water" },
+    { id: 57, name: "Professional Water Testing Kit", image: "ProductImages/57.jpg", link: "https://amzn.to/47WZhaA", category: "water" },
+    { id: 58, name: "Portable Water Storage Container", image: "ProductImages/58.jpg", link: "https://amzn.to/3Y6YUa8", category: "water" },
+    { id: 59, name: "Heavy-Duty PVC Pipe Kit", image: "ProductImages/59.jpg", link: "https://amzn.to/3XPHXzv", category: "water" },
+    { id: 60, name: "Stainless Steel Filter Screen Set", image: "ProductImages/60.jpg", link: "https://amzn.to/4eqUpg2", category: "water" },
+    { id: 61, name: "Professional Grade Hacksaw", image: "ProductImages/61.jpg", link: "https://amzn.to/3ZOOKfC", category: "water" },
+    { id: 62, name: "Industrial Silicone Sealant", image: "ProductImages/62.jpg", link: "https://amzn.to/3ZOeA3o", category: "water" },
+    { id: 63, name: "High-Pressure Hose & Nozzle Set", image: "ProductImages/63.jpg", link: "https://amzn.to/3ZLAHHo", category: "water" },
+    { id: 64, name: "Heavy-Duty Concrete Block Set", image: "ProductImages/64.jpg", link: "https://amzn.to/3BtVTI3", category: "water" },
+    { id: 65, name: "Professional Spigot Installation Kit", image: "ProductImages/65.jpg", link: "https://amzn.to/3zx8A4h", category: "water" },
 
     // Power & Energy
-    { id: 66, name: "Portable solar panels", image: "ProductImages/66.jpg", link: "https://amzn.to/4gLeZcJ", category: "power" },
-    { id: 67, name: "Rechargeable battery packs", image: "ProductImages/67.jpg", link: "https://amzn.to/3Y5l3Fz", category: "power" },
-    { id: 68, name: "Solar-powered battery chargers", image: "ProductImages/68.jpg", link: "https://amzn.to/3TQex30", category: "power" },
-    { id: 69, name: "Hand-crank generators", image: "ProductImages/69.jpg", link: "https://amzn.to/3NtNkzP", category: "power" },
-    { id: 70, name: "Solar inverters", image: "ProductImages/70.jpg", link: "https://amzn.to/3Y5l6Bf", category: "power" },
-    { id: 71, name: "Multimeter", image: "ProductImages/71.jpg", link: "https://amzn.to/4erbcjl", category: "power" },
-    { id: 72, name: "Mounting brackets", image: "ProductImages/72.jpg", link: "https://amzn.to/3zJPWGm", category: "power" },
-    { id: 73, name: "Extension cables", image: "ProductImages/73.jpg", link: "https://amzn.to/4dt9cG0", category: "power" },
-    { id: 74, name: "Cable management clips", image: "ProductImages/74.jpg", link: "https://amzn.to/4dszF6r", category: "power" },
-    { id: 75, name: "Solar power controller", image: "ProductImages/75.jpg", link: "https://amzn.to/47RUt61", category: "power" },
-    { id: 76, name: "Battery storage box", image: "ProductImages/76.jpg", link: "https://amzn.to/3Y8YfoF", category: "power" },
+    { id: 66, name: "Portable Solar Panel System", image: "ProductImages/66.jpg", link: "https://amzn.to/4gLeZcJ", category: "power" },
+    { id: 67, name: "High-Capacity Battery Power Bank", image: "ProductImages/67.jpg", link: "https://amzn.to/3Y5l3Fz", category: "power" },
+    { id: 68, name: "Solar-Powered Battery Charging Station", image: "ProductImages/68.jpg", link: "https://amzn.to/3TQex30", category: "power" },
+    { id: 69, name: "Emergency Hand Crank Generator", image: "ProductImages/69.jpg", link: "https://amzn.to/3NtNkzP", category: "power" },
+    { id: 70, name: "Professional Solar Power Inverter", image: "ProductImages/70.jpg", link: "https://amzn.to/3Y5l6Bf", category: "power" },
+    { id: 71, name: "Digital Multimeter Pro", image: "ProductImages/71.jpg", link: "https://amzn.to/4erbcjl", category: "power" },
+    { id: 72, name: "Universal Solar Panel Mounting Kit", image: "ProductImages/72.jpg", link: "https://amzn.to/3zJPWGm", category: "power" },
+    { id: 73, name: "Heavy-Duty Extension Cable Set", image: "ProductImages/73.jpg", link: "https://amzn.to/4dt9cG0", category: "power" },
+    { id: 74, name: "Professional Cable Management System", image: "ProductImages/74.jpg", link: "https://amzn.to/4dszF6r", category: "power" },
+    { id: 75, name: "Advanced Solar Charge Controller", image: "ProductImages/75.jpg", link: "https://amzn.to/47RUt61", category: "power" },
+    { id: 76, name: "Weatherproof Battery Storage Box", image: "ProductImages/76.jpg", link: "https://amzn.to/3Y8YfoF", category: "power" },
 
     // Medical Category
-    { id: 77, name: "Comprehensive first aid kit", image: "ProductImages/77.jpg", link: "https://amzn.to/3Y4zQQZ", category: "medical" },
-    { id: 78, name: "Prescription medication organizer", image: "ProductImages/78.jpg", link: "https://amzn.to/4dySpRI", category: "medical" },
-    { id: 79, name: "Blood pressure monitor", image: "ProductImages/79.jpg", link: "https://amzn.to/3N7D3ZK", category: "medical" },
-    { id: 80, name: "Thermometer", image: "ProductImages/80.jpg", link: "https://amzn.to/3zHJNdF", category: "medical" },
-    { id: 81, name: "Personal protective equipment", image: "ProductImages/81.jpg", link: "https://amzn.to/4eMsO9a", category: "medical" },
-    { id: 82, name: "Sterile gloves", image: "ProductImages/82.jpg", link: "https://amzn.to/4eIdjPp", category: "medical" },
-    { id: 83, name: "Adhesive bandages and gauze", image: "ProductImages/83.jpg", link: "https://amzn.to/3N9IEyM", category: "medical" },
-    { id: 84, name: "Antiseptic wipes and creams", image: "ProductImages/84.jpg", link: "https://amzn.to/4esmaVA", category: "medical" },
-    { id: 85, name: "Medical scissors", image: "ProductImages/85.jpg", link: "https://amzn.to/3zKfpiX", category: "medical" },
-    { id: 86, name: "Tweezers", image: "ProductImages/86.jpg", link: "https://amzn.to/4eHWOTo", category: "medical" },
-    { id: 87, name: "Splints", image: "ProductImages/87.jpg", link: "https://amzn.to/3BpqfLz", category: "medical" },
-    { id: 88, name: "First-aid manual", image: "ProductImages/88.jpg", link: "https://amzn.to/3zJQ60q", category: "medical" },
+    { id: 77, name: "Professional First Aid Emergency Kit", image: "ProductImages/77.jpg", link: "https://amzn.to/3Y4zQQZ", category: "medical" },
+    { id: 78, name: "Weekly Medication Organization System", image: "ProductImages/78.jpg", link: "https://amzn.to/4dySpRI", category: "medical" },
+    { id: 79, name: "Digital Blood Pressure Monitor", image: "ProductImages/79.jpg", link: "https://amzn.to/3N7D3ZK", category: "medical" },
+    { id: 80, name: "Digital Medical Thermometer", image: "ProductImages/80.jpg", link: "https://amzn.to/3zHJNdF", category: "medical" },
+    { id: 81, name: "Complete PPE Protection Kit", image: "ProductImages/81.jpg", link: "https://amzn.to/4eMsO9a", category: "medical" },
+    { id: 82, name: "Medical-Grade Nitrile Gloves", image: "ProductImages/82.jpg", link: "https://amzn.to/4eIdjPp", category: "medical" },
+    { id: 83, name: "Professional Medical Bandage Kit", image: "ProductImages/83.jpg", link: "https://amzn.to/3N9IEyM", category: "medical" },
+    { id: 84, name: "Medical Antiseptic Care Kit", image: "ProductImages/84.jpg", link: "https://amzn.to/4esmaVA", category: "medical" },
+    { id: 85, name: "Medical Emergency Scissors", image: "ProductImages/85.jpg", link: "https://amzn.to/3zKfpiX", category: "medical" },
+    { id: 86, name: "Precision Medical Tweezers Set", image: "ProductImages/86.jpg", link: "https://amzn.to/4eHWOTo", category: "medical" },
+    { id: 87, name: "Emergency Splint Support Kit", image: "ProductImages/87.jpg", link: "https://amzn.to/3BpqfLz", category: "medical" },
+    { id: 88, name: "Comprehensive First Aid Guide", image: "ProductImages/88.jpg", link: "https://amzn.to/3zJQ60q", category: "medical" },
 
     // Communication Category
-    { id: 89, name: "Hand-crank emergency radios", image: "ProductImages/89.jpg", link: "https://amzn.to/3TTu95N", category: "communication" },
-    { id: 90, name: "Long-range walkie-talkies", image: "ProductImages/90.jpg", link: "https://amzn.to/4eO8HqP", category: "communication" },
-    { id: 91, name: "HAM radios", image: "ProductImages/91.jpg", link: "https://amzn.to/3Y5lD6d", category: "communication" },
-    { id: 92, name: "Two-way radios", image: "ProductImages/92.jpg", link: "https://amzn.to/3Y7zhWH", category: "communication" },
-    { id: 93, name: "Backup solar-powered chargers", image: "ProductImages/93.jpg", link: "https://amzn.to/3Ya4BUQ", category: "communication" },
-    { id: 94, name: "Signal mirrors", image: "ProductImages/94.jpg", link: "https://amzn.to/3zPfTnO", category: "communication" },
-    { id: 95, name: "Earphones", image: "ProductImages/95.jpg", link: "https://amzn.to/3Y5Anly", category: "communication" },
-    { id: 96, name: "Signal flares", image: "ProductImages/96.jpg", link: "https://amzn.to/4eGJiA5", category: "communication" },
-    { id: 97, name: "Antenna kits", image: "ProductImages/97.jpg", link: "https://amzn.to/3XPIgKF", category: "communication" },
-    { id: 98, name: "Waterproof notepads", image: "ProductImages/98.jpg", link: "https://amzn.to/3XRfysM", category: "communication" },
+    { id: 89, name: "Emergency Hand-Crank Weather Radio", image: "ProductImages/89.jpg", link: "https://amzn.to/3TTu95N", category: "communication" },
+    { id: 90, name: "Long-Range Two-Way Radio Set", image: "ProductImages/90.jpg", link: "https://amzn.to/4eO8HqP", category: "communication" },
+    { id: 91, name: "Professional HAM Radio Kit", image: "ProductImages/91.jpg", link: "https://amzn.to/3Y5lD6d", category: "communication" },
+    { id: 92, name: "Advanced Two-Way Radio System", image: "ProductImages/92.jpg", link: "https://amzn.to/3Y7zhWH", category: "communication" },
+    { id: 93, name: "Solar Emergency Phone Charger", image: "ProductImages/93.jpg", link: "https://amzn.to/3Ya4BUQ", category: "communication" },
+    { id: 94, name: "Emergency Signal Mirror Kit", image: "ProductImages/94.jpg", link: "https://amzn.to/3zPfTnO", category: "communication" },
+    { id: 95, name: "Tactical Communication Earpiece", image: "ProductImages/95.jpg", link: "https://amzn.to/3Y5Anly", category: "communication" },
+    { id: 96, name: "Emergency Signal Flare Kit", image: "ProductImages/96.jpg", link: "https://amzn.to/4eGJiA5", category: "communication" },
+    { id: 97, name: "Professional Radio Antenna Kit", image: "ProductImages/97.jpg", link: "https://amzn.to/3XPIgKF", category: "communication" },
+    { id: 98, name: "All-Weather Tactical Notepad", image: "ProductImages/98.jpg", link: "https://amzn.to/3XRfysM", category: "communication" },
 
     // Defense Category
-    { id: 32, name: "Home defense weapons safe", image: "ProductImages/32.jpg", link: "https://amzn.to/3TSGrLU", category: "defense" },
-    { id: 33, name: "Tactical flashlight", image: "ProductImages/33.jpg", link: "https://amzn.to/3XS64h5", category: "defense" },
-    { id: 34, name: "Fixed-blade tactical knife", image: "ProductImages/34.jpg", link: "https://amzn.to/3BBs7AY", category: "defense" },
-    { id: 35, name: "Pepper spray", image: "ProductImages/35.jpg", link: "https://amzn.to/4dxeQa1", category: "defense" },
-    { id: 36, name: "Foam padding", image: "ProductImages/36.jpg", link: "https://amzn.to/4gM9pXC", category: "defense" },
-    { id: 37, name: "Gun locks", image: "ProductImages/37.jpg", link: "https://amzn.to/4gPiBdS", category: "defense" },
-    { id: 38, name: "Biometric lockbox", image: "ProductImages/38.jpg", link: "https://amzn.to/4gQf4Mc", category: "defense" },
-    { id: 39, name: "Handheld stun guns", image: "ProductImages/39.jpg", link: "https://amzn.to/4gH7vaN", category: "defense" },
-    { id: 40, name: "Safe installation kit", image: "ProductImages/40.jpg", link: "https://amzn.to/3BtVy8f", category: "defense" },
-    { id: 41, name: "Bolts and fasteners", image: "ProductImages/41.jpg", link: "https://amzn.to/3XM3B7H", category: "defense" },
-    { id: 42, name: "Cable ties", image: "ProductImages/42.jpg", link: "https://amzn.to/4esqCnj", category: "defense" },
-    { id: 43, name: "Tactical gloves", image: "ProductImages/43.jpg", link: "https://amzn.to/4eprGYZ", category: "defense" }
+    { id: 32, name: "High-Security Home Defense Safe", image: "ProductImages/32.jpg", link: "https://amzn.to/3TSGrLU", category: "defense" },
+    { id: 33, name: "Military-Grade Tactical Flashlight", image: "ProductImages/33.jpg", link: "https://amzn.to/3XS64h5", category: "defense" },
+    { id: 34, name: "Premium Tactical Defense Knife", image: "ProductImages/34.jpg", link: "https://amzn.to/3BBs7AY", category: "defense" },
+    { id: 35, name: "Professional-Grade Pepper Spray", image: "ProductImages/35.jpg", link: "https://amzn.to/4dxeQa1", category: "defense" },
+    { id: 36, name: "High-Density Protective Foam Padding", image: "ProductImages/36.jpg", link: "https://amzn.to/4gM9pXC", category: "defense" },
+    { id: 37, name: "Professional Firearm Safety Lock", image: "ProductImages/37.jpg", link: "https://amzn.to/4gPiBdS", category: "defense" },
+    { id: 38, name: "Biometric Security Lock Box", image: "ProductImages/38.jpg", link: "https://amzn.to/4gQf4Mc", category: "defense" },
+    { id: 39, name: "High-Voltage Stun Defense Unit", image: "ProductImages/39.jpg", link: "https://amzn.to/4gH7vaN", category: "defense" },
+    { id: 40, name: "Professional Safe Installation Kit", image: "ProductImages/40.jpg", link: "https://amzn.to/3BtVy8f", category: "defense" },
+    { id: 41, name: "Heavy-Duty Security Bolt Set", image: "ProductImages/41.jpg", link: "https://amzn.to/3XM3B7H", category: "defense" },
+    { id: 42, name: "Industrial-Grade Security Cable Ties", image: "ProductImages/42.jpg", link: "https://amzn.to/4esqCnj", category: "defense" },
+    { id: 43, name: "Professional Tactical Defense Gloves", image: "ProductImages/43.jpg", link: "https://amzn.to/4eprGYZ", category: "defense" }
 ];
 
         function createProductCard(product) {
