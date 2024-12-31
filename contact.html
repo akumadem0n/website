@@ -19,31 +19,38 @@
         .navbar {
             background-color: #1a1a1a;
             color: white;
-            padding: 1rem;
+            padding: 1.5rem 1rem;
             position: relative;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .navbar-container {
             max-width: 1200px;
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .navbar h1 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin: 0;
-            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.2rem;
         }
 
         .navbar-title {
-    text-decoration: none; /* Removes underline for links */
-    color: white; /* Matches the text color */
-}
+            text-decoration: none;
+            color: white;
+        }
 
-.navbar-title:hover {
-    color: #FFD814; /* Optional: Add a hover effect */
-}
-
-        .subtitle {
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.7);
-            display: block;
+        .navbar-title:hover {
+            color: #FFD814;
         }
 
         .contact-form-container {
@@ -88,41 +95,57 @@
         .contact-form-container button:hover {
             background-color: #F7CA00;
         }
-   
-        .footer {
-    background-color: #1a1a1a; /* Matches navbar color */
-    color: white;
-    text-align: center;
-    padding: 1rem 0;
-    position: relative;
-    width: 100%;
-    font-size: 0.9rem;
-}
 
-.footer p {
-    margin: 0;
-}
+        .footer {
+            background-color: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            position: relative;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .footer p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <a href="index.html" class="navbar-title">
-            <h1>Survival Gear Store</h1>
-        </a>
-        <span class="subtitle">by Best Seller Promotion</span>
+        <div class="navbar-container">
+            <a href="index.html" class="navbar-title">
+                <h1>Survival Gear Store</h1>
+            </a>
+            <span class="subtitle">by Best Seller Promotion</span>
+        </div>
     </nav>
 
     <div class="contact-form-container">
         <h2>Contact Us</h2>
-        <form action="mailto:info@bestsellerpromotion.com" method="post" enctype="text/plain">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+        <form action="mailto:info@bestsellerpromotion.com" method="GET" onsubmit="return handleMailTo(event)">
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+            <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
             <button type="submit">Send</button>
         </form>
     </div>
+
     <footer class="footer">
         <p>Best Seller Promotion &copy; 2024</p>
     </footer>
+
+    <script>
+        function handleMailTo(event) {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            const mailtoLink = `mailto:info@bestsellerpromotion.com?subject=Contact from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0AMessage: ${encodeURIComponent(message)}`;
+            window.location.href = mailtoLink;
+
+            return false; // Prevents default form submission
+        }
+    </script>
 </body>
 </html>
