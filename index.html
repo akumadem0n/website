@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survival Gear Store</title>
+    <title>Best Seller Promotion - Survival Gear Store</title>
     <style>
         * {
             margin: 0;
@@ -161,20 +161,119 @@
                 <span>⚡</span>
                 <p>Power & Energy</p>
             </div>
+            <div class="category-card" data-category="medical">
+                <span>🏥</span>
+                <p>Medical</p>
+            </div>
+            <div class="category-card" data-category="communication">
+                <span>📡</span>
+                <p>Communication</p>
+            </div>
+            <div class="category-card" data-category="defense">
+                <span>🛡️</span>
+                <p>Defense</p>
+            </div>
         </div>
 
         <div class="products-grid" id="productsGrid"></div>
     </div>
 
     <script>
-        const products = [
-            { id: 1, name: "Motion Sensor Lights", image: "https://picsum.photos/400/300?1", link: "https://amzn.to/3Nd6iKw", category: "home" },
-            { id: 2, name: "Deadbolt Locks", image: "https://picsum.photos/400/300?2", link: "https://amzn.to/3ZN59Rv", category: "home" },
-            { id: 3, name: "Reinforced Strike Plates", image: "https://picsum.photos/400/300?3", link: "https://amzn.to/3TSwnCz", category: "home" },
-            { id: 4, name: "Solar Power Bank", image: "https://picsum.photos/400/300?4", link: "https://amzn.to/4ewwFHK", category: "power" },
-            { id: 5, name: "Water Filter System", image: "https://picsum.photos/400/300?5", link: "https://amzn.to/3TSwnCz", category: "water" },
-            { id: 6, name: "Food Storage Containers", image: "https://picsum.photos/400/300?6", link: "https://amzn.to/4ewwFHK", category: "food" }
-        ];
+const products = [
+    // Home Security
+    { id: 1, name: "Motion-sensor lights", image: "https://picsum.photos/400/300?1", link: "https://amzn.to/3Nd6iKw", category: "home" },
+    { id: 2, name: "Deadbolt locks", image: "https://picsum.photos/400/300?2", link: "https://amzn.to/3ZN59Rv", category: "home" },
+    { id: 3, name: "Reinforced strike plates", image: "https://picsum.photos/400/300?3", link: "https://amzn.to/3TSwnCz", category: "home" },
+    { id: 4, name: "Door and window alarms", image: "https://picsum.photos/400/300?4", link: "https://amzn.to/4ewwFHK", category: "home" },
+    { id: 25, name: "Steel security door", image: "https://picsum.photos/400/300?25", link: "https://amzn.to/3TM9QXR", category: "home" },
+    { id: 26, name: "Window security film", image: "https://picsum.photos/400/300?26", link: "https://amzn.to/3Y8XlIN", category: "home" },
+    { id: 27, name: "Door brace", image: "https://picsum.photos/400/300?27", link: "https://amzn.to/486nFGV", category: "home" },
+    { id: 28, name: "Plywood for reinforcement", image: "https://picsum.photos/400/300?28", link: "https://amzn.to/3zD4Z4F", category: "home" },
+    { id: 29, name: "Security bars for windows", image: "https://picsum.photos/400/300?29", link: "https://amzn.to/3Y6pG2b", category: "home" },
+    { id: 30, name: "Caulking gun", image: "https://picsum.photos/400/300?30", link: "https://amzn.to/3Y3EqPs", category: "home" },
+    { id: 31, name: "Battery-powered LED lighting", image: "https://picsum.photos/400/300?31", link: "https://amzn.to/4duaJLN", category: "home" },
+
+    // Food Storage
+    { id: 13, name: "Vacuum sealer", image: "https://picsum.photos/400/300?13", link: "https://amzn.to/4gQJxK3", category: "food" },
+    { id: 14, name: "Food-grade water storage containers", image: "https://picsum.photos/400/300?14", link: "https://amzn.to/3BsrHwU", category: "food" },
+    { id: 15, name: "Airtight food storage bins", image: "https://picsum.photos/400/300?15", link: "https://amzn.to/3XReo0o", category: "food" },
+    { id: 16, name: "Heavy-duty shelving", image: "https://picsum.photos/400/300?16", link: "https://amzn.to/3XGU8yo", category: "food" },
+    { id: 17, name: "Canning jars", image: "https://picsum.photos/400/300?17", link: "https://amzn.to/3TTLLyx", category: "food" },
+    { id: 18, name: "Labels and markers", image: "https://picsum.photos/400/300?18", link: "https://amzn.to/4esqggt", category: "food" },
+    { id: 19, name: "Vacuum seal bags", image: "https://picsum.photos/400/300?19", link: "https://amzn.to/3zL96vt", category: "food" },
+    { id: 20, name: "Scissors for cutting vacuum bags", image: "https://picsum.photos/400/300?20", link: "https://amzn.to/47WYJBy", category: "food" },
+    { id: 21, name: "Stackable plastic crates", image: "https://picsum.photos/400/300?21", link: "https://amzn.to/3Bt6CCr", category: "food" },
+    { id: 22, name: "Oxygen absorbers", image: "https://picsum.photos/400/300?22", link: "https://amzn.to/47U6Iz5", category: "food" },
+    { id: 23, name: "Measuring cups", image: "https://picsum.photos/400/300?23", link: "https://amzn.to/47SACE8", category: "food" },
+    { id: 24, name: "Plastic funnels", image: "https://picsum.photos/400/300?24", link: "https://amzn.to/3TQdMaa", category: "food" },
+
+    // Water Collection
+    { id: 54, name: "Rainwater collection barrels", image: "https://picsum.photos/400/300?54", link: "https://amzn.to/47OaytI", category: "water" },
+    { id: 55, name: "Gutter diverter kits", image: "https://picsum.photos/400/300?55", link: "https://amzn.to/3Y84MzC", category: "water" },
+    { id: 56, name: "Water filtration pitchers", image: "https://picsum.photos/400/300?56", link: "https://amzn.to/3Bpq8Qr", category: "water" },
+    { id: 57, name: "Water test kits", image: "https://picsum.photos/400/300?57", link: "https://amzn.to/47WZhaA", category: "water" },
+    { id: 58, name: "Collapsible water containers", image: "https://picsum.photos/400/300?58", link: "https://amzn.to/3Y6YUa8", category: "water" },
+    { id: 59, name: "PVC pipes and connectors", image: "https://picsum.photos/400/300?59", link: "https://amzn.to/3XPHXzv", category: "water" },
+    { id: 60, name: "Mesh screens", image: "https://picsum.photos/400/300?60", link: "https://amzn.to/4eqUpg2", category: "water" },
+    { id: 61, name: "Hacksaw", image: "https://picsum.photos/400/300?61", link: "https://amzn.to/3ZOOKfC", category: "water" },
+    { id: 62, name: "Silicone sealant", image: "https://picsum.photos/400/300?62", link: "https://amzn.to/3ZOeA3o", category: "water" },
+    { id: 63, name: "Hose and nozzle", image: "https://picsum.photos/400/300?63", link: "https://amzn.to/3ZLAHHo", category: "water" },
+    { id: 64, name: "Concrete blocks", image: "https://picsum.photos/400/300?64", link: "https://amzn.to/3BtVTI3", category: "water" },
+    { id: 65, name: "Spigots and washers", image: "https://picsum.photos/400/300?65", link: "https://amzn.to/3zx8A4h", category: "water" },
+
+    // Power & Energy
+    { id: 66, name: "Portable solar panels", image: "https://picsum.photos/400/300?66", link: "https://amzn.to/4gLeZcJ", category: "power" },
+    { id: 67, name: "Rechargeable battery packs", image: "https://picsum.photos/400/300?67", link: "https://amzn.to/3Y5l3Fz", category: "power" },
+    { id: 68, name: "Solar-powered battery chargers", image: "https://picsum.photos/400/300?68", link: "https://amzn.to/3TQex30", category: "power" },
+    { id: 69, name: "Hand-crank generators", image: "https://picsum.photos/400/300?69", link: "https://amzn.to/3NtNkzP", category: "power" },
+    { id: 70, name: "Solar inverters", image: "https://picsum.photos/400/300?70", link: "https://amzn.to/3Y5l6Bf", category: "power" },
+    { id: 71, name: "Multimeter", image: "https://picsum.photos/400/300?71", link: "https://amzn.to/4erbcjl", category: "power" },
+    { id: 72, name: "Mounting brackets", image: "https://picsum.photos/400/300?72", link: "https://amzn.to/3zJPWGm", category: "power" },
+    { id: 73, name: "Extension cables", image: "https://picsum.photos/400/300?73", link: "https://amzn.to/4dt9cG0", category: "power" },
+    { id: 74, name: "Cable management clips", image: "https://picsum.photos/400/300?74", link: "https://amzn.to/4dszF6r", category: "power" },
+    { id: 75, name: "Solar power controller", image: "https://picsum.photos/400/300?75", link: "https://amzn.to/47RUt61", category: "power" },
+    { id: 76, name: "Battery storage box", image: "https://picsum.photos/400/300?76", link: "https://amzn.to/3Y8YfoF", category: "power" },
+
+    // Medical Category
+    { id: 77, name: "Comprehensive first aid kit", image: "https://picsum.photos/400/300?77", link: "https://amzn.to/3Y4zQQZ", category: "medical" },
+    { id: 78, name: "Prescription medication organizer", image: "https://picsum.photos/400/300?78", link: "https://amzn.to/4dySpRI", category: "medical" },
+    { id: 79, name: "Blood pressure monitor", image: "https://picsum.photos/400/300?79", link: "https://amzn.to/3N7D3ZK", category: "medical" },
+    { id: 80, name: "Thermometer", image: "https://picsum.photos/400/300?80", link: "https://amzn.to/3zHJNdF", category: "medical" },
+    { id: 81, name: "Personal protective equipment", image: "https://picsum.photos/400/300?81", link: "https://amzn.to/4eMsO9a", category: "medical" },
+    { id: 82, name: "Sterile gloves", image: "https://picsum.photos/400/300?82", link: "https://amzn.to/4eIdjPp", category: "medical" },
+    { id: 83, name: "Adhesive bandages and gauze", image: "https://picsum.photos/400/300?83", link: "https://amzn.to/3N9IEyM", category: "medical" },
+    { id: 84, name: "Antiseptic wipes and creams", image: "https://picsum.photos/400/300?84", link: "https://amzn.to/4esmaVA", category: "medical" },
+    { id: 85, name: "Medical scissors", image: "https://picsum.photos/400/300?85", link: "https://amzn.to/3zKfpiX", category: "medical" },
+    { id: 86, name: "Tweezers", image: "https://picsum.photos/400/300?86", link: "https://amzn.to/4eHWOTo", category: "medical" },
+    { id: 87, name: "Splints", image: "https://picsum.photos/400/300?87", link: "https://amzn.to/3BpqfLz", category: "medical" },
+    { id: 88, name: "First-aid manual", image: "https://picsum.photos/400/300?88", link: "https://amzn.to/3zJQ60q", category: "medical" },
+
+    // Communication Category
+    { id: 89, name: "Hand-crank emergency radios", image: "https://picsum.photos/400/300?89", link: "https://amzn.to/3TTu95N", category: "communication" },
+    { id: 90, name: "Long-range walkie-talkies", image: "https://picsum.photos/400/300?90", link: "https://amzn.to/4eO8HqP", category: "communication" },
+    { id: 91, name: "HAM radios", image: "https://picsum.photos/400/300?91", link: "https://amzn.to/3Y5lD6d", category: "communication" },
+    { id: 92, name: "Two-way radios", image: "https://picsum.photos/400/300?92", link: "https://amzn.to/3Y7zhWH", category: "communication" },
+    { id: 93, name: "Backup solar-powered chargers", image: "https://picsum.photos/400/300?93", link: "https://amzn.to/3Ya4BUQ", category: "communication" },
+    { id: 94, name: "Signal mirrors", image: "https://picsum.photos/400/300?94", link: "https://amzn.to/3zPfTnO", category: "communication" },
+    { id: 95, name: "Earphones", image: "https://picsum.photos/400/300?95", link: "https://amzn.to/3Y5Anly", category: "communication" },
+    { id: 96, name: "Signal flares", image: "https://picsum.photos/400/300?96", link: "https://amzn.to/4eGJiA5", category: "communication" },
+    { id: 97, name: "Antenna kits", image: "https://picsum.photos/400/300?97", link: "https://amzn.to/3XPIgKF", category: "communication" },
+    { id: 98, name: "Waterproof notepads", image: "https://picsum.photos/400/300?98", link: "https://amzn.to/3XRfysM", category: "communication" },
+
+    // Defense Category
+    { id: 32, name: "Home defense weapons safe", image: "https://picsum.photos/400/300?32", link: "https://amzn.to/3TSGrLU", category: "defense" },
+    { id: 33, name: "Tactical flashlight", image: "https://picsum.photos/400/300?33", link: "https://amzn.to/3XS64h5", category: "defense" },
+    { id: 34, name: "Fixed-blade tactical knife", image: "https://picsum.photos/400/300?34", link: "https://amzn.to/3BBs7AY", category: "defense" },
+    { id: 35, name: "Pepper spray", image: "https://picsum.photos/400/300?35", link: "https://amzn.to/4dxeQa1", category: "defense" },
+    { id: 36, name: "Foam padding", image: "https://picsum.photos/400/300?36", link: "https://amzn.to/4gM9pXC", category: "defense" },
+    { id: 37, name: "Gun locks", image: "https://picsum.photos/400/300?37", link: "https://amzn.to/4gPiBdS", category: "defense" },
+    { id: 38, name: "Biometric lockbox", image: "https://picsum.photos/400/300?38", link: "https://amzn.to/4gQf4Mc", category: "defense" },
+    { id: 39, name: "Handheld stun guns", image: "https://picsum.photos/400/300?39", link: "https://amzn.to/4gH7vaN", category: "defense" },
+    { id: 40, name: "Safe installation kit", image: "https://picsum.photos/400/300?40", link: "https://amzn.to/3BtVy8f", category: "defense" },
+    { id: 41, name: "Bolts and fasteners", image: "https://picsum.photos/400/300?41", link: "https://amzn.to/3XM3B7H", category: "defense" },
+    { id: 42, name: "Cable ties", image: "https://picsum.photos/400/300?42", link: "https://amzn.to/4esqCnj", category: "defense" },
+    { id: 43, name: "Tactical gloves", image: "https://picsum.photos/400/300?43", link: "https://amzn.to/4eprGYZ", category: "defense" }
+];
 
         function createProductCard(product) {
             return `
