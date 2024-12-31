@@ -33,11 +33,15 @@
 
         // Product Categories
         const categories = {
-            "Home Security": ["Motion-sensor lights", "Deadbolt locks", "Door alarms", "Security cameras"],
-            "Tools & Installation": ["Electric drill", "Screwdriver set", "Ladder", "Tool kit"],
-            "Food Storage": ["Vacuum sealer", "Storage containers", "Shelving units"],
-            "Medical Supplies": ["First aid kit", "Medications", "Bandages"],
-            "Communication": ["Emergency radio", "Walkie-talkies", "Satellite phone"],
+            "Home Security": products.filter(p => p.category === "Home Security").length,
+            "Food Storage": products.filter(p => p.category === "Food Storage").length,
+            "Home Fortification": products.filter(p => p.category === "Home Fortification").length,
+            "Defense Equipment": products.filter(p => p.category === "Defense Equipment").length,
+            "Food Preservation": products.filter(p => p.category === "Food Preservation").length,
+            "Water Management": products.filter(p => p.category === "Water Management").length,
+            "Power Solutions": products.filter(p => p.category === "Power Solutions").length,
+            "Medical Supplies": products.filter(p => p.category === "Medical Supplies").length,
+            "Communication": products.filter(p => p.category === "Communication").length
         };
 
         // Product Data
@@ -49,20 +53,134 @@
                 category: "Home Security",
                 image: "/api/placeholder/400/300",
                 affiliateLink: "https://amzn.to/3Nd6iKw",
-                rating: 4.5,
-                description: "High-sensitivity motion detection with wide coverage area"
+                rating: 4.5
             },
             {
                 id: 2,
                 title: "Deadbolt locks",
                 price: 26.83,
                 category: "Home Security",
-                image: "/api/placeholder/400/300",
+                image: "/api/placeholder/380/300",
                 affiliateLink: "https://amzn.to/3ZN59Rv",
-                rating: 4.8,
-                description: "High-security grade 1 deadbolt with SmartKey technology"
+                rating: 4.8
             },
-            // Add all products from the provided list...
+            {
+                id: 3,
+                title: "Reinforced strike plates",
+                price: 24.87,
+                category: "Home Security",
+                image: "/api/placeholder/420/300",
+                affiliateLink: "https://amzn.to/3TSwnCz",
+                rating: 4.6
+            },
+            {
+                id: 4,
+                title: "Door and window alarms",
+                price: 23.42,
+                category: "Home Security",
+                image: "/api/placeholder/390/300",
+                affiliateLink: "https://amzn.to/4ewwFHK",
+                rating: 4.3
+            },
+            {
+                id: 13,
+                title: "Vacuum sealer",
+                price: 59.49,
+                category: "Food Storage",
+                image: "/api/placeholder/410/300",
+                affiliateLink: "https://amzn.to/4gQJxK3",
+                rating: 4.7
+            },
+            {
+                id: 14,
+                title: "Food-grade water storage containers",
+                price: 72.15,
+                category: "Food Storage",
+                image: "/api/placeholder/400/320",
+                affiliateLink: "https://amzn.to/3BsrHwU",
+                rating: 4.4
+            },
+            {
+                id: 25,
+                title: "Steel or solid core security door",
+                price: 113.15,
+                category: "Home Fortification",
+                image: "/api/placeholder/430/300",
+                affiliateLink: "https://amzn.to/3TM9QXR",
+                rating: 4.9
+            },
+            {
+                id: 32,
+                title: "Home defense weapons safe",
+                price: 82.12,
+                category: "Defense Equipment",
+                image: "/api/placeholder/400/310",
+                affiliateLink: "https://amzn.to/3TSGrLU",
+                rating: 4.8
+            },
+            {
+                id: 44,
+                title: "Dehydrator",
+                price: 40.46,
+                category: "Food Preservation",
+                image: "/api/placeholder/370/300",
+                affiliateLink: "https://amzn.to/3N6eqg7",
+                rating: 4.5
+            },
+            {
+                id: 54,
+                title: "Rainwater collection barrels",
+                price: 114.29,
+                category: "Water Management",
+                image: "/api/placeholder/410/310",
+                affiliateLink: "https://amzn.to/47OaytI",
+                rating: 4.6
+            },
+            {
+                id: 66,
+                title: "Portable solar panels",
+                price: 103.22,
+                category: "Power Solutions",
+                image: "/api/placeholder/420/310",
+                affiliateLink: "https://amzn.to/4gLeZcJ",
+                rating: 4.7
+            },
+            {
+                id: 77,
+                title: "Comprehensive first aid kit",
+                price: 119.52,
+                category: "Medical Supplies",
+                image: "/api/placeholder/400/290",
+                affiliateLink: "https://amzn.to/3Y4zQQZ",
+                rating: 4.8
+            },
+            {
+                id: 89,
+                title: "Hand-crank emergency radios",
+                price: 76.36,
+                category: "Communication",
+                image: "/api/placeholder/390/310",
+                affiliateLink: "https://amzn.to/3TTu95N",
+                rating: 4.4
+            },
+            {
+                id: 90,
+                title: "Long-range walkie-talkies",
+                price: 110.81,
+                category: "Communication",
+                image: "/api/placeholder/380/310",
+                affiliateLink: "https://amzn.to/4eO8HqP",
+                rating: 4.6
+            },
+            {
+                id: 91,
+                title: "HAM radios",
+                price: 40.81,
+                category: "Communication",
+                image: "/api/placeholder/410/290",
+                affiliateLink: "https://amzn.to/3Y5lD6d",
+                rating: 4.5
+            }
         ];
 
         // Header Component
