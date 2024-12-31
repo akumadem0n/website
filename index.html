@@ -37,32 +37,31 @@
 
 .contact-button {
     position: absolute;
-    top: 50%; /* Centers the button vertically within the navbar */
-    right: 1rem; /* Positions the button 1rem from the right */
-    transform: translateY(-50%); /* Adjusts for vertical centering */
+    top: 1rem;
+    right: 1rem;
     background-color: #FFD814;
     color: #111;
-    padding: 0.6rem 1.2rem;
+    padding: 0.4rem 1rem; /* Smaller padding for a smaller button */
     border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem; /* Slightly smaller font size */
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.3s;
-    z-index: 10; /* Ensures it stays on top */
+    z-index: 10;
 }
 
 .contact-button:hover {
     background-color: #F7CA00;
 }
 
-
 .subtitle {
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.7);
-    margin-top: 0.5rem; /* Add some space between title and subtitle */
-    display: block; /* Makes it appear below the title */
+    margin-top: 0.3rem; /* Adjust space from the title */
+    display: block; /* Ensure it stays under the title */
+    margin-left: 0; /* Align to the left under the title */
 }
 
         .container {
@@ -184,6 +183,7 @@
         <span class="subtitle">by Best Seller Promotion</span>
         <a href="contact.html" class="contact-button">Contact</a>
     </nav>
+    
 
     <div class="container">
         <input type="text" class="search-bar" placeholder="Search products..." id="searchInput">

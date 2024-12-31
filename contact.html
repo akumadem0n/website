@@ -31,6 +31,15 @@
             display: inline-block;
         }
 
+        .navbar-title {
+    text-decoration: none; /* Removes underline for links */
+    color: white; /* Matches the text color */
+}
+
+.navbar-title:hover {
+    color: #FFD814; /* Optional: Add a hover effect */
+}
+
         .subtitle {
             font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.7);
@@ -83,9 +92,10 @@
 </head>
 <body>
     <nav class="navbar">
-        <h1>Survival Gear Store</h1>
+        <a href="index.html" class="navbar-title">
+            <h1>Survival Gear Store</h1>
+        </a>
         <span class="subtitle">by Best Seller Promotion</span>
-        <a href="index.html" class="contact-button">Home</a>
     </nav>
 
     <div class="contact-form-container">
