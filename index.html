@@ -32,8 +32,10 @@
 .navbar h1 {
     font-size: 1.5rem;
     margin: 0;
-    display: block; /* Ensure it stays as a block-level element */
+    display: block; /* Ensure the title is a block-level element */
 }
+
+
 
 .contact-button {
     position: absolute;
@@ -57,11 +59,11 @@
 }
 
 .subtitle {
-    font-size: 0.7rem;
+    font-size: 0.9rem; /* Adjust size for better readability */
     color: rgba(255, 255, 255, 0.7);
-    margin-top: 0.3rem; /* Adjust space from the title */
-    display: block; /* Ensure it stays under the title */
-    margin-left: 0; /* Align to the left under the title */
+    margin-top: 0.3rem; /* Add spacing from the title */
+    display: block; /* Display the subtitle beneath the title */
+    text-align: left; /* Align it with the title */
 }
 
         .container {
@@ -155,6 +157,20 @@
     font-size: 0.8rem;
     color: #555;
     margin-bottom: 1rem;
+}
+
+.footer {
+    background-color: #1a1a1a; /* Matches the navbar color */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: relative; /* Adjust as per layout needs */
+    width: 100%; /* Ensure it spans the entire width */
+    font-size: 0.9rem;
+}
+
+.footer p {
+    margin: 0;
 }
 
         .amazon-button {
@@ -380,5 +396,8 @@ function createProductCard(product) {
 
         displayProducts(products);
     </script>
+    <footer class="footer">
+        <p>Best Seller Promotion &copy; 2024</p>
+    </footer>
 </body>
 </html>
