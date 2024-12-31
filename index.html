@@ -28,15 +28,14 @@
 .navbar h1 {
     font-size: 1.5rem;
     margin: 0;
-    display: inline-block;
+    display: block; /* Ensure it stays as a block-level element */
 }
 
 .subtitle {
     font-size: 0.7rem;
     color: rgba(255, 255, 255, 0.7);
-    margin-left: 10px;
-    display: inline-block;
-    vertical-align: middle;
+    margin-top: 0.5rem; /* Add some space between title and subtitle */
+    display: block; /* Makes it appear below the title */
 }
 
         .container {
@@ -126,7 +125,7 @@
         }
 
         .product-description {
-    font-size: 0.9rem;
+    font-size: 0.5rem;
     color: #555;
     margin-bottom: 1rem;
 }
@@ -294,7 +293,6 @@ const products = [
     { id: 41, name: "Heavy-Duty Security Bolt Set", image: "ProductImages/41.jpg", link: "https://amzn.to/3XM3B7H", category: "defense", description: "Strengthen your home’s security with these industrial-grade bolts." },
     { id: 42, name: "Industrial-Grade Security Cable Ties", image: "ProductImages/42.jpg", link: "https://amzn.to/4esqCnj", category: "defense", description: "Secure items tightly with these durable and heavy-duty cable ties." },
     { id: 43, name: "Professional Tactical Defense Gloves", image: "ProductImages/43.jpg", link: "https://amzn.to/4eprGYZ", category: "defense", description: "Protect your hands during emergencies with these tactical gloves." }
-
 
 ];
 
