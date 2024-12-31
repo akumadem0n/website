@@ -54,11 +54,12 @@
         }
 
         .categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+    gap: 1rem; /* Add space between the items */
+    justify-content: space-between; /* Distribute items evenly */
+    margin-bottom: 2rem; /* Maintain spacing below the category section */
+}
 
         .category-card {
             background: white;
@@ -125,7 +126,7 @@
         }
 
         .product-description {
-    font-size: 0.5rem;
+    font-size: 0.8rem;
     color: #555;
     margin-bottom: 1rem;
 }
