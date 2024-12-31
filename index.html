@@ -149,10 +149,12 @@
     font-size: 1rem;
     margin-bottom: 1rem;
     color: #333;
-    height: 2.5rem; /* Fixed height for title */
-    overflow: hidden; /* Ensure text doesn't overflow */
-    text-overflow: ellipsis; /* Add ellipsis if text overflows */
-    white-space: nowrap; /* Prevent text wrapping */
+    height: auto; /* Permetti al titolo di adattarsi alla lunghezza del testo */
+    line-height: 1.2rem; /* Gestisce l'interlinea per i titoli su più righe */
+    overflow: hidden; /* Assicura che non sfori lo spazio della card */
+    display: -webkit-box; /* Webkit-specific per il controllo multilinea */
+    -webkit-box-orient: vertical; /* Orientamento verticale */
+    text-overflow: ellipsis; /* Aggiunge "..." se il testo supera le righe previste */
 }
 
 .product-description {
