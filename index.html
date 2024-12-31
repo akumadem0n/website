@@ -26,35 +26,31 @@
 }
 
 .navbar-container {
-    max-width: 1200px; /* Keep content inside a central container */
+    max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Align items (title and button) vertically */
+    justify-content: space-between; /* Space out the title and the button */
 }
 
-
 .navbar h1 {
-    font-size: 1.8rem; /* Slightly larger title */
-    margin-bottom: 0.2rem; /* Add space between title and subtitle */
+    font-size: 1.8rem;
+    margin: 0;
 }
 
 
 .contact-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
     background-color: #FFD814;
     color: #111;
-    padding: 0.4rem 1rem; /* Smaller padding for a smaller button */
+    padding: 0.4rem 1rem;
     border: none;
     border-radius: 4px;
-    font-size: 0.9rem; /* Slightly smaller font size */
+    font-size: 0.9rem;
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.3s;
-    z-index: 10;
+    margin-left: auto; /* Push the button to the far right */
 }
 
 .contact-button:hover {
@@ -62,10 +58,10 @@
 }
 
 .subtitle {
-    font-size: 0.9rem; /* Smaller font for the subtitle */
-    color: rgba(255, 255, 255, 0.7); /* Lighter text color */
-    display: block; /* Ensure it's underneath the title */
-    text-align: left; /* Align to the left */
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 0.2rem;
+    text-align: left;
 }
 
         .container {
