@@ -17,24 +17,27 @@
         }
 
         .navbar {
-    background-color: #1a1a1a;
+    background-color: #1a1a1a; /* Keep the same background color */
     color: white;
-    padding: 1rem;
-    position: relative; /* This is required for the contact button to position itself correctly */
-    max-width: 1200px;
+    padding: 1.5rem 1rem;
+    position: relative;
+    width: 100%; /* Ensure it spans the entire width */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.navbar-container {
+    max-width: 1200px; /* Keep content inside a central container */
     margin: 0 auto;
-    display: flex; /* Adds flexbox for better layout control */
-    align-items: center; /* Vertically aligns items */
-    justify-content: space-between; /* Distributes the title and button evenly */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 
 .navbar h1 {
-    font-size: 1.5rem;
-    margin: 0;
-    display: block; /* Ensure the title is a block-level element */
+    font-size: 1.8rem; /* Slightly larger title */
+    margin-bottom: 0.2rem; /* Add space between title and subtitle */
 }
-
 
 
 .contact-button {
@@ -59,11 +62,10 @@
 }
 
 .subtitle {
-    font-size: 0.9rem; /* Adjust size for better readability */
-    color: rgba(255, 255, 255, 0.7);
-    margin-top: 0.3rem; /* Add spacing from the title */
-    display: block; /* Display the subtitle beneath the title */
-    text-align: left; /* Align it with the title */
+    font-size: 0.9rem; /* Smaller font for the subtitle */
+    color: rgba(255, 255, 255, 0.7); /* Lighter text color */
+    display: block; /* Ensure it's underneath the title */
+    text-align: left; /* Align to the left */
 }
 
         .container {
@@ -195,9 +197,13 @@
 </head>
 <body>
     <nav class="navbar">
-        <h1>Survival Gear Store</h1>
-        <span class="subtitle">by Best Seller Promotion</span>
-        <a href="contact.html" class="contact-button">Contact</a>
+        <div class="navbar-container">
+            <div>
+                <h1>Survival Gear Store</h1>
+                <span class="subtitle">by Best Seller Promotion</span>
+            </div>
+            <a href="contact.html" class="contact-button">Contact</a>
+        </div>
     </nav>
     
 
