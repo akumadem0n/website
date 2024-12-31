@@ -20,16 +20,43 @@
     background-color: #1a1a1a;
     color: white;
     padding: 1rem;
-    position: relative;
+    position: relative; /* This is required for the contact button to position itself correctly */
     max-width: 1200px;
     margin: 0 auto;
+    display: flex; /* Adds flexbox for better layout control */
+    align-items: center; /* Vertically aligns items */
+    justify-content: space-between; /* Distributes the title and button evenly */
 }
+
 
 .navbar h1 {
     font-size: 1.5rem;
     margin: 0;
     display: block; /* Ensure it stays as a block-level element */
 }
+
+.contact-button {
+    position: absolute;
+    top: 50%; /* Centers the button vertically within the navbar */
+    right: 1rem; /* Positions the button 1rem from the right */
+    transform: translateY(-50%); /* Adjusts for vertical centering */
+    background-color: #FFD814;
+    color: #111;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 10; /* Ensures it stays on top */
+}
+
+.contact-button:hover {
+    background-color: #F7CA00;
+}
+
 
 .subtitle {
     font-size: 0.7rem;
@@ -155,6 +182,7 @@
     <nav class="navbar">
         <h1>Survival Gear Store</h1>
         <span class="subtitle">by Best Seller Promotion</span>
+        <a href="contact.html" class="contact-button">Contact</a>
     </nav>
 
     <div class="container">
