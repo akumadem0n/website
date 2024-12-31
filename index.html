@@ -189,6 +189,22 @@
         .hidden {
             display: none;
         }
+
+        .qr-button {
+    display: block;
+    background: #FF4500;
+    color: white;
+    padding: 0.8rem;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.qr-button:hover {
+    background: #D93900;
+}
     </style>
 </head>
 <body>
@@ -351,16 +367,17 @@ function createProductCard(product) {
                 <h3 class="product-title">${product.name}</h3>
                 <p class="product-description">${product.description}</p>
                 <a href="${product.link}" class="amazon-button" target="_blank">View on Amazon</a>
+                <a href="${product.qrCodeLink}" class="qr-button" target="_blank">Scan QR Code</a>
             </div>
         </div>
     `;
 }
 
 
-        function displayProducts(filteredProducts) {
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
-        }
+function displayProducts(filteredProducts) {
+    const productsGrid = document.getElementById('productsGrid');
+    productsGrid.innerHTML = filteredProducts.map(product => createProductCard(product)).join('');
+}
 
         function filterProducts(category, searchTerm = '') {
             let filtered = products;
