@@ -132,27 +132,24 @@
 
     <div class="contact-form-container">
         <h2>Contact Us</h2>
-        <form action="mailto:info@bestsellerpromotion.com" method="GET" onsubmit="return handleMailTo(event)">
-            <input type="text" id="name" name="name" placeholder="Your Name" required autocomplete="off">
-            <input type="email" id="email" name="email" placeholder="Your Email" required autocomplete="off">
-            <textarea id="message" name="message" rows="5" placeholder="Your Message" required autocomplete="off"></textarea>
-            <button type="submit">Send</button>
+        <form name="contact" method="POST" data-netlify="true">
+            <p>
+                <label>Name <input type="text" name="name" required></label>
+            </p>
+            <p>
+                <label>Email <input type="email" name="email" required></label>
+            </p>
+            <p>
+                <label>Message <textarea name="message" rows="5" required></textarea></label>
+            </p>
+            <p>
+                <button type="submit">Send</button>
+            </p>
         </form>
     </div>
 
     <footer class="footer">
         <p>Best Seller Promotion &copy; 2024</p>
     </footer>
-
-    <script>
-        function handleMailTo(event) {
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            const mailtoLink = `mailto:info@bestsellerpromotion.com?subject=Contact from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0AMessage: ${encodeURIComponent(message)}`;
-            window.location.href = mailtoLink;
-        }
-    </script>
 </body>
 </html>
