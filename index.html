@@ -92,15 +92,29 @@
     padding: 1rem;
     border-radius: 8px;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.2s;
-    height: 120px; /* Set a consistent height */
-    width: 150px;  /* Set a consistent width */
-    display: flex; /* Center content */
+    height: 120px; /* Consistent height */
+    width: 135px;  /* Default width */
+    display: flex;
     flex-direction: column; /* Stack icon and text */
     justify-content: center; /* Center vertically */
     align-items: center; /* Center horizontally */
+}
+
+@media (max-width: 767px) {
+    /* For mobile devices */
+    .category-card {
+        width: 150px;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* For desktop devices */
+    .category-card {
+        width: 130px;
+    }
 }
 
         .category-card:hover {
