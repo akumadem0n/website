@@ -161,12 +161,12 @@
     font-size: 0.8rem;
     color: #555;
     margin-bottom: 1rem;
-    height: 3rem; /* Fixed height for description */
-    overflow: hidden; /* Ensure text doesn't overflow */
-    text-overflow: ellipsis; /* Add ellipsis if text overflows */
-    display: -webkit-box; /* Webkit-specific for multiline ellipsis */
-    -webkit-line-clamp: 2; /* Show 2 lines max */
-    -webkit-box-orient: vertical; /* Vertical text orientation */
+    line-height: 1.2rem; /* Interlinea per una leggibilità ottimale */
+    height: 3.6rem; /* Calcolato: line-height (1.2rem) x 3 righe */
+    overflow: hidden; /* Nasconde il testo che supera il limite */
+    display: -webkit-box; /* Webkit-specific per il controllo multilinea */
+    -webkit-box-orient: vertical; /* Imposta l'orientamento verticale */
+    text-overflow: ellipsis; /* Aggiunge "..." se il testo supera le righe previste */
 }
 
 .footer {
