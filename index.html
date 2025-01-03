@@ -269,6 +269,26 @@
     text-overflow: ellipsis; /* Aggiunge "..." se il testo supera le righe previste */
 }
 
+.toggle-view {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#toggleViewButton {
+    background-color: #FFD814;
+    color: #111;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#toggleViewButton:hover {
+    background-color: #F7CA00;
+}
+
 .footer {
     background-color: #1a1a1a; /* Matches the navbar color */
     color: white;
@@ -312,6 +332,10 @@
     border-radius: 4px;
     font-weight: bold;
     margin-top: 0.5rem;
+}
+
+.products-grid.view-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
 }
 
 .qr-button:hover {
@@ -367,6 +391,10 @@
                 <span>🛡️</span>
                 <p>Defense</p>
             </div>
+        </div>
+
+        <div class="toggle-view">
+            <button id="toggleViewButton">Switch to 4 per Row</button>
         </div>
 
         <div class="products-grid" id="productsGrid"></div>
@@ -525,6 +553,21 @@ function displayProducts(filteredProducts) {
             const activeCategory = document.querySelector('.category-card.active').dataset.category;
             filterProducts(activeCategory, searchTerm);
         });
+
+        document.getElementById('toggleViewButton').addEventListener('click', () => {
+    const productsGrid = document.getElementById('productsGrid');
+    const button = document.getElementById('toggleViewButton');
+
+    if (productsGrid.classList.contains('view-4')) {
+        // Switch to 2 per row
+        productsGrid.classList.remove('view-4');
+        button.textContent = 'Switch to 4 per Row';
+    } else {
+        // Switch to 4 per row
+        productsGrid.classList.add('view-4');
+        button.textContent = 'Switch to 2 per Row';
+    }
+});
 
         displayProducts(products);
     </script>
