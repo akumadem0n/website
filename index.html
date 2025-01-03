@@ -103,6 +103,19 @@
     align-items: center; /* Center horizontally */
 }
 
+@media (max-width: 600px) {
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px; /* Adjust spacing between cards */
+  }
+
+  .product-card {
+    max-width: 100%;
+    padding: 10px; /* Adjust padding for smaller cards */
+  }
+}
+
 @media (max-width: 767px) {
     /* For mobile devices */
     .category-card {
