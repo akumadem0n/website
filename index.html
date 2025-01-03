@@ -114,28 +114,37 @@
     .subtitle {
         font-size: 0.8rem; /* Smaller subtitle for mobile */
     }
+    .contact-button {
+        padding: 0.3rem 0.8rem; /* Smaller button for mobile */
+        font-size: 0.8rem; /* Smaller font size for mobile */
+    }
     .products-grid {
-        grid-template-columns: repeat(2, 1fr); /* Display 2 cards per row */
-        gap: 1rem; /* Reduce the gap between cards for better fit */
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+        gap: 0.5rem; /* Reduced gap for smaller screens */
+        padding: 0.5rem; /* Reduce padding for better fit */
     }
 
     .product-card {
-        max-width: 100%; /* Ensure the cards fit within the grid */
-        padding: 0.5rem; /* Adjust padding for smaller screens */
+        padding: 0.5rem; /* Reduce padding inside cards */
+        border: 1px solid #ddd; /* Optional: Add a border for clarity */
     }
 
     .product-image {
-        height: 150px; /* Reduce image height for smaller cards */
+        height: 120px; /* Smaller image for mobile */
+        object-fit: cover; /* Ensure the image fits within the container */
     }
 
     .product-title {
-        font-size: 0.9rem; /* Adjust title size */
+        font-size: 0.8rem; /* Adjust title font size */
+        line-height: 1rem; /* Adjust line height for better fit */
     }
 
     .product-description {
-        font-size: 0.7rem; /* Adjust description size */
+        font-size: 0.7rem; /* Adjust description font size */
+        line-height: 1rem; /* Adjust line height */
     }
 }
+
 
 @media (min-width: 1025px) {
     /* For desktop devices */
