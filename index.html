@@ -155,17 +155,22 @@
     }
     
     .product-title {
-        font-size: 0.8rem;
-        margin-bottom: 0.3rem;
-        line-height: 1;
-        max-lines: 2;
-    }
+    font-size: 0.8rem; /* Adjust as needed */
+    line-height: 1.2rem; /* Line height to manage spacing */
+    height: 3.6rem; /* Ensures space for 3 lines (line-height * 3) */
+    overflow: hidden; /* Hides text that exceeds the space */
+    display: -webkit-box; /* Enables multi-line ellipsis */
+    -webkit-line-clamp: 3; /* Clamps text to 3 lines */
+    -webkit-box-orient: vertical; /* Sets vertical orientation for the box */
+    text-overflow: ellipsis; /* Adds "..." if text is truncated */
+}
 
     .product-description {
         font-size: 0.7rem;
         line-height: 1;
         margin-bottom: 0.3rem;
         height: 2.4rem;
+        -webkit-line-clamp: 3; /* Clamps text to 3 lines */
     }
 
     .product-image {
