@@ -105,6 +105,16 @@
 
 
 @media (max-width: 767px) {
+
+.navbar h1 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 0.6rem;
+}    
+
     .products-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -113,7 +123,10 @@
         width: 100%;
     }
     
-
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 0.5rem !important;
+    }
 
     .product-card {
         width: 100%;
@@ -152,14 +165,6 @@
     }
     .category-card {
         width: 162px;
-    }
-}
-
-/* Also override the main .products-grid at mobile size */
-@media (max-width: 767px) {
-    .products-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.5rem !important;
     }
 }
 
