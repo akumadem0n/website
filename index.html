@@ -114,6 +114,27 @@
     .subtitle {
         font-size: 0.8rem; /* Smaller subtitle for mobile */
     }
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr); /* Display 2 cards per row */
+        gap: 1rem; /* Reduce the gap between cards for better fit */
+    }
+
+    .product-card {
+        max-width: 100%; /* Ensure the cards fit within the grid */
+        padding: 0.5rem; /* Adjust padding for smaller screens */
+    }
+
+    .product-image {
+        height: 150px; /* Reduce image height for smaller cards */
+    }
+
+    .product-title {
+        font-size: 0.9rem; /* Adjust title size */
+    }
+
+    .product-description {
+        font-size: 0.7rem; /* Adjust description size */
+    }
 }
 
 @media (min-width: 1025px) {
