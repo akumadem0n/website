@@ -104,17 +104,69 @@
 }
 
 @media (max-width: 600px) {
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px; /* Adjust spacing between cards */
-  }
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
+        gap: 10px; /* Spacing between cards */
+        padding: 0.5rem; /* Reduced padding for better fit */
+    }
 
-  .product-card {
-    max-width: 100%;
-    padding: 10px; /* Adjust padding for smaller cards */
-  }
+    .product-card {
+        max-width: 100%; /* Ensure cards adapt to column width */
+        padding: 0.5rem; /* Smaller padding inside the card */
+        border: 1px solid #ddd; /* Optional: Add a border for clarity */
+    }
+
+    .product-image {
+        height: 150px; /* Scale down the image height */
+        object-fit: cover; /* Ensure the image fits within the container */
+        object-position: center; /* Center the image */
+    }
+
+    .product-title {
+        font-size: 0.9rem; /* Adjust title font size */
+        line-height: 1.2rem; /* Line height for better readability */
+        margin-bottom: 0.5rem; /* Add spacing below title */
+    }
+
+    .product-description {
+        font-size: 0.75rem; /* Smaller font size for descriptions */
+        line-height: 1rem; /* Adjust line height */
+        height: auto; /* Allow text to expand as needed */
+    }
+
+    .amazon-button, .qr-button {
+        font-size: 0.85rem; /* Adjust button font size */
+        padding: 0.6rem; /* Smaller button padding */
+    }
+
+    .categories {
+        flex-wrap: wrap; /* Ensure category cards wrap on small screens */
+        justify-content: center; /* Center the category cards */
+        gap: 0.5rem; /* Reduced gap between category cards */
+    }
+
+    .category-card {
+        width: 45%; /* Fit 2 category cards per row */
+        height: auto; /* Let height adapt naturally */
+        padding: 0.8rem; /* Adjust padding for smaller cards */
+        font-size: 0.8rem; /* Adjust font size */
+    }
+
+    .navbar h1 {
+        font-size: 1.5rem; /* Smaller title font size */
+    }
+
+    .subtitle {
+        font-size: 0.8rem; /* Adjust subtitle font size */
+    }
+
+    .contact-button {
+        padding: 0.3rem 0.8rem; /* Smaller button for mobile */
+        font-size: 0.8rem; /* Adjust font size */
+    }
 }
+
 
 @media (max-width: 767px) {
     /* For mobile devices */
