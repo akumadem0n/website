@@ -105,37 +105,29 @@
 
 
 @media (max-width: 767px) {
-    /* For mobile devices */
-    .category-card {
-        width: 165px;
-    }
-    .navbar h1 {
-        font-size: 1.5rem; /* Smaller title for mobile */
-    }
-    .subtitle {
-        font-size: 0.8rem; /* Smaller subtitle for mobile */
-    }
-    .contact-button {
-        padding: 0.3rem 0.8rem; /* Smaller button for mobile */
-        font-size: 0.8rem; /* Smaller font size for mobile */
-    }
     .products-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        padding: 1rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        padding: 0.5rem;
     }
     
     .product-card {
-        flex: 0 0 calc(40% - 0.5rem);
+        width: 100%;
         margin: 0;
-        max-width: calc(42% - 0.5rem);
-        height: auto;
+    }
+
+    .product-title {
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
     }
 
     .product-description {
+        font-size: 0.7rem;
+        line-height: 1.2;
         height: auto;
-        margin-bottom: 0.5rem;
+        -webkit-line-clamp: 2;
     }
 
     .product-image {
@@ -144,14 +136,7 @@
 
     .amazon-button, .qr-button {
         padding: 0.5rem;
-    }
-
-    .product-title {
-        font-size: 0.8rem; /* Adjust title font size */
-        line-height: 1rem; /* Adjust line height for better fit */
-    }
-    .amazon-button, .qr-button {
-        padding: 0.5rem;
+        font-size: 0.8rem;
     }
 }
 
